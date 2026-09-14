@@ -1,0 +1,44 @@
+/*
+ * Neumorphism Utility Classes
+ * Soft-Minimalist Tactile UI
+ * 
+ * Dùng CSS variables từ variables.css → tự động đổi theo theme
+ */
+
+.neu-raised {
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-outer);
+  border: var(--border-subtle);
+  border-radius: var(--border-radius-md);
+  transition: box-shadow var(--transition-normal),
+              background var(--transition-normal);
+}
+
+.neu-raised:hover {
+  box-shadow: var(--shadow-outer-sm);
+}
+
+.neu-pressed {
+  background: var(--color-bg-card);
+  box-shadow: none;
+  border: var(--border-subtle);
+  border-radius: var(--border-radius-md);
+  transition: box-shadow var(--transition-normal),
+              background var(--transition-normal);
+}
+
+.neu-flat {
+  background: var(--color-bg-card);
+  border: var(--border-subtle);
+  border-radius: var(--border-radius-md);
+  transition: background var(--transition-normal);
+}
+
+/* Content area — respects font & width settings */
+.content-area {
+  font-family: var(--font-content);
+  font-size: var(--font-size-content);
+  max-width: var(--content-max-width);
+  line-height: 1.75;
+  color: var(--color-text-primary);
+}
