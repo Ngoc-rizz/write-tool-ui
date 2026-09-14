@@ -1,4 +1,5 @@
-import { api, setAccessToken, clearAccessToken, getCsrfToken } from './api-client';
+import { api } from './api-client';
+import { setAccessToken, clearAccessToken, getCsrfToken, } from './token';
 
 interface LoginResponse {
     accessToken: string;
@@ -10,7 +11,6 @@ interface LoginResponse {
         planType: string;
     };
 }
-
 
 export async function login(email: string, password: string) {
     const result = await api.post<LoginResponse>(

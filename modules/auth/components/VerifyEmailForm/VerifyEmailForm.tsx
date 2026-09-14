@@ -112,10 +112,9 @@ export default function VerifyEmailForm({ initialEmail, onBackToRegister }: Veri
       setSuccess('Xác thực email thành công! Đang chuyển hướng sang trang đăng nhập...');
       setTimeout(() => {
         router.push('/login');
-      }, 1500);
+      }, 1000);
     } catch (err: any) {
       setError(err?.message || 'Mã xác nhận không hợp lệ hoặc đã hết hạn.');
-    } finally {
       setLoading(false);
     }
   };

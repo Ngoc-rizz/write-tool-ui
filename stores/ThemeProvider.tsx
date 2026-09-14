@@ -7,6 +7,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+
 import type {
   ThemeSettings,
   ThemeMode,
@@ -14,11 +15,9 @@ import type {
   FontSize,
   ContentWidth,
 } from '@/stores/theme.types';
+
 import { DEFAULT_SETTINGS } from '@/stores/theme.types';
 
-/* =============================================
-   localStorage helpers
-   ============================================= */
 const STORAGE_KEY = 'write-ui-theme-settings';
 
 function loadSettings(): ThemeSettings {
@@ -37,13 +36,9 @@ function saveSettings(settings: ThemeSettings): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
   } catch {
-    // localStorage full or unavailable — fail silently
   }
 }
 
-/* =============================================
-   Apply settings to DOM (data attributes on <html>)
-   ============================================= */
 function applyToDOM(settings: ThemeSettings): void {
   const root = document.documentElement;
   root.setAttribute('data-theme', settings.theme);
@@ -52,9 +47,6 @@ function applyToDOM(settings: ThemeSettings): void {
   root.setAttribute('data-content-width', settings.contentWidth);
 }
 
-/* =============================================
-   Context
-   ============================================= */
 interface ThemeContextValue {
   settings: ThemeSettings;
   setTheme: (theme: ThemeMode) => void;
@@ -66,14 +58,10 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-/* =============================================
-   Provider
-   ============================================= */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [settings, setSettings] = useState<ThemeSettings>(DEFAULT_SETTINGS);
   const [mounted, setMounted] = useState(false);
 
-  // Load from localStorage on mount
   useEffect(() => {
     const stored = loadSettings();
     setSettings(stored);
@@ -81,7 +69,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setMounted(true);
   }, []);
 
-  // Sync to DOM + localStorage whenever settings change
   const updateSettings = useCallback(
     (updater: (prev: ThemeSettings) => ThemeSettings) => {
       setSettings((prev) => {
@@ -119,29 +106,17 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     updateSettings(() => DEFAULT_SETTINGS);
   }, [updateSettings]);
 
-  // Prevent flash of wrong theme (show nothing until mounted)
-  if (!mounted) {
-    return (
-      <div
-        style={{ visibility: 'hidden' }}
-        suppressHydrationWarning
-      >
-        {children}
-      </div>
-    );
-  }
+  const providerValue = {
+    settings,
+    setTheme,
+    setFontFamily,
+    setFontSize,
+    setContentWidth,
+    resetToDefaults,
+  };
 
   return (
-    <ThemeContext.Provider
-      value={{
-        settings,
-        setTheme,
-        setFontFamily,
-        setFontSize,
-        setContentWidth,
-        resetToDefaults,
-      }}
-    >
+    <ThemeContext.Provider value={providerValue}>
       {children}
     </ThemeContext.Provider>
   );

@@ -1,15 +1,27 @@
+'use client';
+
+import React, { useState } from 'react';
+import Navbar from '@/components/layout/Navbar/Navbar';
+import Sidebar from '@/components/layout/Sidebar/Sidebar';
+
 export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <div className="main-layout">
-      {/* Sidebar + Navbar layout for authenticated pages */}
-      <aside className="main-sidebar">{/* Sidebar component */}</aside>
-      <div className="main-content">
-        <header className="main-navbar">{/* Navbar component */}</header>
-        <main className="main-body">{children}</main>
+    <div className="main-layout" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
+      <div className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <Navbar onMenuClick={() => setIsSidebarOpen(true)} />
+        <main className="main-body" style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: '100%', maxWidth: '80%', padding: '0 var(--space-xl)' }}>
+            {children}
+          </div>
+        </main>
       </div>
     </div>
   );

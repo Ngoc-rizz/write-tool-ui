@@ -37,7 +37,7 @@ export default function LoginForm() {
 
     try {
       await login(email, password);
-      router.push('/dashboard');
+      router.push('/home');
     } catch (err: any) {
       const msg = err.message || 'Đăng nhập thất bại';
       if (msg.includes('EMAIL_NOT_VERIFIED') || msg.toLowerCase().includes('chưa được xác thực')) {
@@ -46,7 +46,6 @@ export default function LoginForm() {
       } else {
         setError(msg);
       }
-    } finally {
       setLoading(false);
     }
   };

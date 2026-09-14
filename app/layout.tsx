@@ -20,6 +20,22 @@ export const metadata: Metadata = {
   description: "Ứng dụng hỗ trợ viết với giao diện dịu mắt, tối giản kiểu Neumorphism",
 };
 
+const themeInitScript = `
+  (function() {
+    try {
+      var raw = localStorage.getItem('write-ui-theme-settings');
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        var root = document.documentElement;
+        if (parsed.theme) root.setAttribute('data-theme', parsed.theme);
+        if (parsed.fontFamily) root.setAttribute('data-font', parsed.fontFamily);
+        if (parsed.fontSize) root.setAttribute('data-font-size', parsed.fontSize);
+        if (parsed.contentWidth) root.setAttribute('data-content-width', parsed.contentWidth);
+      }
+    } catch (e) {}
+  })();
+`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -31,6 +47,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       data-content-width="740"
       suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
