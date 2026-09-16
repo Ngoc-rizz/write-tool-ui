@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './Navbar.module.css';
 import { useTheme } from '@/stores/ThemeProvider';
+import { useAuth } from '@/stores/AuthProvider';
 
 interface NavbarProps {
   onMenuClick?: () => void;
@@ -11,6 +12,7 @@ interface NavbarProps {
 
 export default function Navbar({ onMenuClick }: NavbarProps) {
   const { settings, setTheme } = useTheme();
+  const { user, isLoading, isAuthenticated, logout } = useAuth();
   const theme = settings.theme;
 
   const handleThemeToggle = () => {
@@ -73,9 +75,38 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
         </Link>
 
         <div className={styles.userProfile}>
-          <div className={styles.avatar}>NM</div>
-          <span className={styles.userName}>Nguyễn Minh</span>
+          <div className={styles.avatar} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <span className={styles.userName}>
+            {isLoading ? (
+              <div className={styles.skeleton} />
+            ) : (
+              user?.name
+            )}
+          </span>
         </div>
+
+        {isAuthenticated ? (
+          <button onClick={logout} className={styles.iconBtn} title="Đăng xuất" style={{ marginLeft: '8px', border: 'none', background: 'transparent', cursor: 'pointer' }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </button>
+        ) : (
+          <Link href="/login" className={styles.iconBtn} title="Đăng nhập" style={{ marginLeft: '8px', border: 'none', background: 'transparent', cursor: 'pointer' }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+              <polyline points="10 17 15 12 10 7"></polyline>
+              <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+          </Link>
+        )}
       </div>
     </header>
   );

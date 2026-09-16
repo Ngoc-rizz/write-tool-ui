@@ -1,5 +1,5 @@
 import { getErrorMessage } from '../utils/error-mapper';
-import { getAccessToken, API_BASE_URL, refreshAccessToken } from './token';
+import { getAccessToken, API_BASE_URL, refreshAccessToken, clearAccessToken } from './token';
 
 
 interface FetchOptions extends RequestInit {
@@ -9,6 +9,7 @@ interface FetchOptions extends RequestInit {
 
 let isRefreshing = false;
 let refreshPromise: Promise<string> | null = null;
+let isRedirecting = false;
 
 export const api = {
     async request<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
@@ -26,7 +27,6 @@ export const api = {
             ...(data !== undefined && { body: JSON.stringify(data) }),
         });
 
-        console.log('Fetching:', endpoint, 'Token:', token);
 
         let response;
         try {
@@ -36,6 +36,10 @@ export const api = {
         }
 
         if (response.status === 401 && !skipAuth) {
+            if (!token) {
+                throw new Error(getErrorMessage(401, 'Vui lòng đăng nhập để sử dụng tính năng này'));
+            }
+
             if (!isRefreshing) {
                 isRefreshing = true;
                 refreshPromise = refreshAccessToken().finally(() => {
@@ -46,10 +50,19 @@ export const api = {
             try {
                 const newToken = await refreshPromise!;
                 response = await fetch(`${API_BASE_URL}${endpoint}`, buildConfig(newToken));
+
+                if (response.status === 401) {
+                    if (typeof window !== 'undefined') {
+                        window.dispatchEvent(new Event('auth:unauthorized'));
+                    }
+                }
             } catch {
-                if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
-                    alert('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại.');
+                if (typeof window !== 'undefined' && window.location.pathname !== '/login' && !isRedirecting) {
+                    isRedirecting = true;
+                    clearAccessToken();
                     window.location.href = '/login';
+                    // Reset flag sau khi đã schedule redirect, cho phép redirect lại ở session tiếp theo
+                    setTimeout(() => { isRedirecting = false; }, 100);
                 }
                 throw new Error(getErrorMessage(401, 'Phiên đăng nhập hết hạn, vui lòng đăng nhập lại'));
             }

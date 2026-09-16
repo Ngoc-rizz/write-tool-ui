@@ -21,7 +21,7 @@ export interface DocumentListResponse {
 
 export const documentService = {
   async fetchDocuments(): Promise<Document[]> {
-    // const res = await api.get<DocumentListResponse>('/documents');
-    return [];
+    const res = await api.get<DocumentListResponse>('/documents');
+    return res.data;
   }
 };

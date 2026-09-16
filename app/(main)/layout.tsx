@@ -18,7 +18,7 @@ export default function MainLayout({
       <div className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Navbar onMenuClick={() => setIsSidebarOpen(true)} />
         <main className="main-body" style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-          <div style={{ width: '100%', maxWidth: '80%', padding: '0 var(--space-xl)' }}>
+          <div className="w-full max-w-[95%] md:max-w-[80%]" style={{ padding: '0 var(--space-xl)' }}>
             {children}
           </div>
         </main>

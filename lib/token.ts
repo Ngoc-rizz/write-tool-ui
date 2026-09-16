@@ -6,13 +6,16 @@ export function getAccessToken(): string | null {
 }
 
 export function setAccessToken(token: string) {
-    console.log('token', token)
     localStorage.setItem('accessToken', token);
 }
 
 export function clearAccessToken() {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('user');
+    localStorage.removeItem('u');
 }
+
+
 
 export function getCsrfToken(): string | null {
     if (typeof document === 'undefined') return null;
