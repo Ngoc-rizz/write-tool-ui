@@ -1,0 +1,23 @@
+/* ============================================
+   THEME: Giấy Ngà (Ivory Paper)
+   #F7F4EE — Dịu mắt ban ngày
+   ============================================ */
+[data-theme='giay-nga'] {
+  --color-bg-page: #F7F4EE;
+  --color-bg-card: #FDF9F3;
+  --color-text-primary: #3B3228;
+  --color-text-secondary: #6B5D4F;
+  --color-text-muted: #A89B8C;
+  --color-accent: #8B6914;
+  --color-accent-hover: #6F5410;
+  --color-border: rgba(139, 105, 20, 0.1);
+
+  /* Neumorphism shadow colors */
+  --shadow-dark: #D9D6D0;
+  --shadow-light: #FFFFFF;
+  
+  /* Primary Button (Darker version of theme hue) */
+  --color-primary: #3a352d;
+  --color-primary-hover: #292520;
+  --color-primary-text: #F7F4EE;
+}

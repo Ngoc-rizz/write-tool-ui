@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import AuthCard from '../AuthCard/AuthCard';
 import styles from '../AuthCard/AuthCard.module.css';
-import { login } from '@/lib/auth';
+import { api } from '@/lib/api-client';
+import { useAuth } from '@/stores/AuthProvider';
 
 export default function LoginForm() {
   const router = useRouter();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -36,8 +38,10 @@ export default function LoginForm() {
     setLoading(true);
 
     try {
-      await login(email, password);
-      router.push('/dashboard');
+      const result = await api.auth.login({ email, password });
+      console.log("result", result)
+      login(result.accessToken, result.user);
+      router.push('/home');
     } catch (err: any) {
       const msg = err.message || 'Đăng nhập thất bại';
       if (msg.includes('EMAIL_NOT_VERIFIED') || msg.toLowerCase().includes('chưa được xác thực')) {
@@ -46,7 +50,6 @@ export default function LoginForm() {
       } else {
         setError(msg);
       }
-    } finally {
       setLoading(false);
     }
   };

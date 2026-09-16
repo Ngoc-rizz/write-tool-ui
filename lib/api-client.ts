@@ -1,53 +1,15 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
+import { getErrorMessage } from '../utils/error-mapper';
+import { getAccessToken, API_BASE_URL, refreshAccessToken, clearAccessToken } from './token';
+
 
 interface FetchOptions extends RequestInit {
     data?: unknown;
     skipAuth?: boolean;
 }
 
-function getAccessToken(): string | null {
-    if (typeof window === 'undefined') return null
-    return localStorage.getItem('accessToken')
-}
-
-function setAccessToken(token: string) {
-    localStorage.setItem('accessToken', token);
-}
-
-function clearAccessToken() {
-    localStorage.removeItem('accessToken');
-}
-
-function getCsrfToken(): string | null {
-    if (typeof document === 'undefined') return null;
-    const match = document.cookie.match(/(?:^|;\s*)csrfToken=([^;]*)/);
-    return match ? decodeURIComponent(match[1]) : null;
-}
-
 let isRefreshing = false;
 let refreshPromise: Promise<string> | null = null;
-
-async function refreshAccessToken(): Promise<string> {
-    const csrfToken = getCsrfToken();
-
-    const res = await fetch(`${API_BASE_URL}/auth/refresh`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'X-CSRF-Token': csrfToken || '',
-        },
-    });
-
-    if (!res.ok) {
-        clearAccessToken();
-        if (typeof window !== 'undefined') window.location.href = '/login';
-        throw new Error('Refresh token hết hạn, vui lòng đăng nhập lại');
-    }
-
-    const result = await res.json();
-    setAccessToken(result.accessToken);
-    return result.accessToken;
-}
+let isRedirecting = false;
 
 export const api = {
     async request<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
@@ -65,9 +27,19 @@ export const api = {
             ...(data !== undefined && { body: JSON.stringify(data) }),
         });
 
-        let response = await fetch(`${API_BASE_URL}${endpoint}`, buildConfig(token));
+
+        let response;
+        try {
+            response = await fetch(`${API_BASE_URL}${endpoint}`, buildConfig(token));
+        } catch (error) {
+            throw new Error('Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng và thử lại.');
+        }
 
         if (response.status === 401 && !skipAuth) {
+            if (!token) {
+                throw new Error(getErrorMessage(401, 'Vui lòng đăng nhập để sử dụng tính năng này'));
+            }
+
             if (!isRefreshing) {
                 isRefreshing = true;
                 refreshPromise = refreshAccessToken().finally(() => {
@@ -78,19 +50,35 @@ export const api = {
             try {
                 const newToken = await refreshPromise!;
                 response = await fetch(`${API_BASE_URL}${endpoint}`, buildConfig(newToken));
+
+                if (response.status === 401) {
+                    if (typeof window !== 'undefined') {
+                        window.dispatchEvent(new Event('auth:unauthorized'));
+                    }
+                }
             } catch {
-                throw new Error('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại');
+                if (typeof window !== 'undefined' && window.location.pathname !== '/login' && !isRedirecting) {
+                    isRedirecting = true;
+                    clearAccessToken();
+                    window.location.href = '/login';
+                    // Reset flag sau khi đã schedule redirect, cho phép redirect lại ở session tiếp theo
+                    setTimeout(() => { isRedirecting = false; }, 100);
+                }
+                throw new Error(getErrorMessage(401, 'Phiên đăng nhập hết hạn, vui lòng đăng nhập lại'));
             }
         }
 
         const resData = await response.json().catch(() => null);
-
         if (!response.ok) {
-            const errorMessage = resData?.message || resData?.error || `Lỗi ${response.status}`;
-            throw new Error(Array.isArray(errorMessage) ? errorMessage.join(', ') : errorMessage);
+            const rawMessage = resData?.message || resData?.error;
+            throw new Error(getErrorMessage(response.status, rawMessage));
         }
 
-        return resData as T;
+        if (resData && typeof resData === 'object' && 'success' in resData && 'data' in resData) {
+            return resData.data.data as T;
+        }
+
+        return resData.data as T;
     },
     get: <T>(endpoint: string, options?: Omit<FetchOptions, 'method'>) =>
         api.request<T>(endpoint, { ...options, method: 'GET' }),
@@ -131,5 +119,3 @@ export const api = {
             api.post<any>('/auth/reset-password', data, { skipAuth: true }),
     },
 };
-
-export { setAccessToken, clearAccessToken, getAccessToken, getCsrfToken };

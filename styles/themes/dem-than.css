@@ -1,0 +1,23 @@
+/* ============================================
+   THEME: Đêm Than (Charcoal Night)
+   #161716 — Tránh bóng ma OLED
+   ============================================ */
+[data-theme='dem-than'] {
+  --color-bg-page: #161716;
+  --color-bg-card: #1E1F1E;
+  --color-text-primary: #D4CFC4;
+  --color-text-secondary: #9C9789;
+  --color-text-muted: #5C584E;
+  --color-accent: #C4915A;
+  --color-accent-hover: #D4A16A;
+  --color-border: rgba(196, 145, 90, 0.12);
+
+  /* Performance shadow overrides for dark mode */
+  --shadow-outer: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-outer-sm: 0 2px 4px rgba(0, 0, 0, 0.25);
+
+  /* Primary Button */
+  --color-primary: #3d3e3d;
+  --color-primary-hover: #4e504e;
+  --color-primary-text: #D4CFC4;
+}

@@ -2,8 +2,8 @@
 // TODO: API_BASE_URL, ROUTES, STORAGE_KEYS
 
 export const ROUTES = {
-  HOME: '/',
-  DASHBOARD: '/dashboard',
+  ROOT: '/',
+  HOME: '/home',
   SETTINGS: '/settings',
   STATISTICS: '/statistics',
   LOGIN: '/login',

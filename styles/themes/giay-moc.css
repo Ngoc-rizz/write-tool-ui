@@ -1,0 +1,23 @@
+/* ============================================
+   THEME: Giấy Mộc (Natural Paper)
+   #F1EAD9 — Màu trang sách in
+   ============================================ */
+[data-theme='giay-moc'] {
+  --color-bg-page: #F1EAD9;
+  --color-bg-card: #F8F3E7;
+  --color-text-primary: #2E261A;
+  --color-text-secondary: #5C4F3A;
+  --color-text-muted: #9C8B72;
+  --color-accent: #7A542E;
+  --color-accent-hover: #614324;
+  --color-border: rgba(122, 84, 46, 0.1);
+
+  /* Neumorphism shadow colors */
+  --shadow-dark: #D4CDBF;
+  --shadow-light: #FFF8EB;
+
+  /* Primary Button */
+  --color-primary: #383021;
+  --color-primary-hover: #262117;
+  --color-primary-text: #F1EAD9;
+}

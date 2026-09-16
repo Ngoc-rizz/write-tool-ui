@@ -56,7 +56,6 @@ export default function RegisterForm() {
       setStep('verify');
     } catch (err: any) {
       setError(err?.message || 'Đăng ký thất bại. Vui lòng thử lại.');
-    } finally {
       setLoading(false);
     }
   };

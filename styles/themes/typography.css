@@ -1,0 +1,34 @@
+/* Font family */
+[data-font='serif'] {
+  --font-content: 'Source Serif 4', 'Georgia', serif;
+}
+
+[data-font='sans'] {
+  --font-content: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Font size */
+[data-font-size='16'] {
+  --font-size-content: 16px;
+}
+
+[data-font-size='18'] {
+  --font-size-content: 18px;
+}
+
+[data-font-size='20'] {
+  --font-size-content: 20px;
+}
+
+/* Content max-width */
+[data-content-width='680'] {
+  --content-max-width: 680px;
+}
+
+[data-content-width='740'] {
+  --content-max-width: 740px;
+}
+
+[data-content-width='800'] {
+  --content-max-width: 800px;
+}
