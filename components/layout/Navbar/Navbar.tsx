@@ -8,9 +8,10 @@ import { useAuth } from '@/stores/AuthProvider';
 
 interface NavbarProps {
   onMenuClick?: () => void;
+  actions?: React.ReactNode;
 }
 
-export default function Navbar({ onMenuClick }: NavbarProps) {
+export default function Navbar({ onMenuClick, actions }: NavbarProps) {
   const { settings, setTheme } = useTheme();
   const { user, isLoading, isAuthenticated, logout } = useAuth();
   const theme = settings.theme;
@@ -44,6 +45,8 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
       </div>
 
       <div className={styles.right}>
+        {actions}
+        
         <button className={styles.iconBtn} onClick={handleThemeToggle} title="Đổi giao diện">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="5"></circle>

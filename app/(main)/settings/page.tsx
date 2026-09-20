@@ -1,3 +1,5 @@
+import MainSetting from "@/modules/settings/components/MainSetting";
+
 export default function SettingsPage() {
-  return <div>Settings Page</div>;
+  return <MainSetting />;
 }

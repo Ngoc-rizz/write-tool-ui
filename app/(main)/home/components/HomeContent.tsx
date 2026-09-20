@@ -9,9 +9,11 @@ interface HomeContentProps {
   loading: boolean;
   documents: Document[];
   viewMode: 'grid' | 'list';
+  onEditDocument: (doc: Document) => void;
+  onDeleteDocument: (doc: Document) => void;
 }
 
-export default function HomeContent({ user, loading, documents, viewMode }: HomeContentProps) {
+export default function HomeContent({ user, loading, documents, viewMode, onEditDocument, onDeleteDocument }: HomeContentProps) {
   if (loading) {
     return (
       <div className={styles.loadingContainer}>
@@ -40,7 +42,13 @@ export default function HomeContent({ user, loading, documents, viewMode }: Home
   return (
     <div className={viewMode === 'grid' ? styles.grid : styles.list}>
       {documents.map(doc => (
-        <DocumentCard key={doc.id} document={doc} layout={viewMode} />
+        <DocumentCard 
+          key={doc.id} 
+          document={doc} 
+          layout={viewMode} 
+          onEditClick={onEditDocument}
+          onDeleteClick={onDeleteDocument}
+        />
       ))}
     </div>
   );

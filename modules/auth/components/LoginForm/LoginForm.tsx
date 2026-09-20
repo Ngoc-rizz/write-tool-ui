@@ -39,7 +39,6 @@ export default function LoginForm() {
 
     try {
       const result = await api.auth.login({ email, password });
-      console.log("result", result)
       login(result.accessToken, result.user);
       router.push('/home');
     } catch (err: any) {

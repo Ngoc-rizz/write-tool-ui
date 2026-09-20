@@ -1,0 +1,188 @@
+.header {
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--space-xl);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg-page);
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 6px 12px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.backBtn:hover {
+  background-color: var(--color-bg-card);
+  color: var(--color-text-primary);
+}
+
+.separator {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.docTitle {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.actionBtn:hover {
+  background-color: var(--color-bg-card);
+  color: var(--color-text-primary);
+}
+
+.badge {
+  background-color: var(--color-border);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: var(--color-text-primary);
+  margin-left: 4px;
+}
+
+.iconGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.iconBtn:hover {
+  background-color: var(--color-bg-card);
+  color: var(--color-text-primary);
+}
+
+.iconBtn .btnText {
+  display: none; /* Hidden by default, maybe show on hover or specific states */
+}
+
+.userProfile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 4px 12px 4px 4px;
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.userProfile:hover {
+  background-color: var(--color-bg-card);
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.userName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+/* Responsive (Mobile View) */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 var(--space-md);
+  }
+
+  .backText, .docTitle, .btnText, .badge, .userName {
+    display: none;
+  }
+
+  .backBtn {
+    padding: 6px;
+    border: none;
+  }
+
+  .separator {
+    display: none;
+  }
+
+  /* Insert a pseudo document title "/ B" instead */
+  .leftSection::after {
+    content: "/ B";
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-left: var(--space-sm);
+  }
+
+  .actionBtn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    justify-content: center;
+    border-radius: var(--border-radius-md);
+  }
+
+  .userProfile {
+    padding: 0;
+    border: none;
+  }
+}

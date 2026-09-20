@@ -1,0 +1,74 @@
+.toolbarContainer {
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 6px 12px;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  pointer-events: auto;
+  max-width: 100%;
+  overflow-x: auto;
+  /* Hide scrollbar for toolbar */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.toolbar::-webkit-scrollbar {
+  display: none;
+}
+
+.formatBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-sm);
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.formatBtn:hover, .formatBtn.active {
+  background-color: var(--color-bg-page);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--color-border);
+  margin: 0 var(--space-xs);
+}
+
+@media (max-width: 768px) {
+  .toolbarContainer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-md);
+    background: linear-gradient(to top, var(--color-bg-page) 50%, transparent);
+    border-bottom: none;
+    pointer-events: none;
+    z-index: 40;
+  }
+  
+  .toolbar {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  }
+}

@@ -1,0 +1,99 @@
+.canvas {
+  max-width: 95%;
+  min-width: 95%;
+  background: transparent;
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  min-height: 100%;
+  contain: content;
+}
+
+.chapterTitle {
+  font-family: var(--font-ui);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.titleUnderline {
+  width: 60px;
+  height: 2px;
+  background-color: var(--color-accent);
+  margin-top: 16px;
+  margin-bottom: 40px;
+}
+
+.editorContentWrapper {
+  flex: 1;
+  width: 100%;
+}
+
+.editorContentWrapper :global(.tiptap) {
+  font-family: var(--font-content);
+  font-size: var(--font-size-content, 18px);
+  line-height: 1.8;
+  color: var(--color-text-primary);
+  outline: none;
+  -webkit-user-select: text;
+  user-select: text;
+  min-height: 60vh;
+  width: 100%;
+  cursor: text;
+}
+
+.editorContentWrapper :global(.tiptap p) {
+  margin-bottom: 12px;
+}
+
+.editorContentWrapper :global(.tiptap h1) {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
+.editorContentWrapper :global(.tiptap h2) {
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
+.editorContentWrapper :global(.tiptap ul) {
+  padding-left: 20px;
+  margin-bottom: 24px;
+  list-style-type: disc;
+}
+
+.editorContentWrapper :global(.tiptap li p) {
+  margin-bottom: 8px;
+}
+
+.editorContentWrapper :global(.tiptap blockquote) {
+  margin: 32px 0 32px 20px;
+  padding-left: 20px;
+  border-left: 3px solid var(--color-accent);
+  font-style: italic;
+  color: var(--color-text-secondary);
+}
+
+
+
+@media (max-width: 768px) {
+  .canvas {
+    padding: 30px 20px;
+    border-radius: var(--border-radius-md);
+    height: fit-content;
+  }
+
+  .chapterTitle {
+    font-size: 24px;
+  }
+
+  .editorContentWrapper :global(.tiptap) {
+    font-size: var(--font-size-content, 16px);
+  }
+
+}

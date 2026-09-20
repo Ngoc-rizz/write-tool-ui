@@ -1,0 +1,231 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.docInfoSection {
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  width: fit-content;
+}
+
+.backBtn:hover {
+  color: var(--color-text-primary);
+}
+
+.docTitleWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.separator {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.docTitle {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.editDocBtn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.editDocBtn:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) calc(var(--space-md) + 16px) var(--space-md) var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-width: 0;
+  flex: 1;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.5px;
+}
+
+.toggleBtn, .closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.toggleBtn:hover, .closeBtn:hover {
+  background-color: var(--color-bg-card);
+  color: var(--color-text-primary);
+}
+
+.chapterList {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.chapterItem {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chapterContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.deleteBtn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all var(--transition-fast);
+  margin-left: var(--space-sm);
+}
+
+.chapterItem:hover .deleteBtn {
+  opacity: 1;
+}
+
+.deleteBtn:hover {
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+}
+
+
+.chapterItem:hover {
+  background-color: var(--color-bg-card);
+}
+
+.chapterItem.active {
+  background-color: var(--color-bg-card);
+  border-color: var(--color-border);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.chapterTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chapterStats {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  gap: 8px;
+  height: 100%;
+}
+
+.emptyState p {
+  margin: 0;
+}
+
+.footer {
+  padding: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.addBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 10px;
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.addBtn:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
