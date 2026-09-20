@@ -61,7 +61,6 @@ export const api = {
                     isRedirecting = true;
                     clearAccessToken();
                     window.location.href = '/login';
-                    // Reset flag sau khi đã schedule redirect, cho phép redirect lại ở session tiếp theo
                     setTimeout(() => { isRedirecting = false; }, 100);
                 }
                 throw new Error(getErrorMessage(401, 'Phiên đăng nhập hết hạn, vui lòng đăng nhập lại'));

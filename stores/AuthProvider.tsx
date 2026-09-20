@@ -51,9 +51,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
             const me = await api.auth.getMe();
             setUser(me as CurrentUser);
-        } catch {
-            clearAccessToken();
-            setUser(VISITOR_USER);
+        } catch (error: any) {
+            const isAuthError = error?.message?.toLowerCase().includes('hết hạn') || 
+                                error?.message?.toLowerCase().includes('đăng nhập');
+            if (isAuthError) {
+                clearAccessToken();
+                setUser(VISITOR_USER);
+            } else {
+                // If it's a network error (like backend restarting) or 500 error,
+                // do NOT clear the token. Fallback to VISITOR_USER only if we don't have a user yet.
+                setUserState((prev) => prev || VISITOR_USER);
+            }
         } finally {
             setIsLoading(false);
         }

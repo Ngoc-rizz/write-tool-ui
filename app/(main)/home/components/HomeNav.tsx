@@ -1,12 +1,15 @@
 import React from 'react';
+import Link from 'next/link';
 import styles from './HomeNav.module.css';
+import type { CurrentUser } from '@/stores/auth.types';
 
 interface HomeNavProps {
+  user: CurrentUser | null;
   viewMode: 'grid' | 'list';
   onViewModeChange: (mode: 'grid' | 'list') => void;
 }
 
-export default function HomeNav({ viewMode, onViewModeChange }: HomeNavProps) {
+export default function HomeNav({ user, viewMode, onViewModeChange }: HomeNavProps) {
   return (
     <div className={styles.toolbar}>
       <div className={styles.searchBox}>
@@ -14,15 +17,15 @@ export default function HomeNav({ viewMode, onViewModeChange }: HomeNavProps) {
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input 
-          type="text" 
-          placeholder="Tìm kiếm tác phẩm, chương hoặc nội dung..." 
+        <input
+          type="text"
+          placeholder="Tìm kiếm tác phẩm, chương hoặc nội dung..."
           className={styles.searchInput}
         />
       </div>
       <div className={styles.viewToggles}>
-        <button 
-          className={`${styles.viewBtn} ${viewMode === 'grid' ? styles.active : ''}`} 
+        <button
+          className={`${styles.viewBtn} ${viewMode === 'grid' ? styles.active : ''}`}
           onClick={() => onViewModeChange('grid')}
           aria-label="Grid view"
         >
@@ -33,8 +36,8 @@ export default function HomeNav({ viewMode, onViewModeChange }: HomeNavProps) {
             <rect x="3" y="14" width="7" height="7"></rect>
           </svg>
         </button>
-        <button 
-          className={`${styles.viewBtn} ${viewMode === 'list' ? styles.active : ''}`} 
+        <button
+          className={`${styles.viewBtn} ${viewMode === 'list' ? styles.active : ''}`}
           onClick={() => onViewModeChange('list')}
           aria-label="List view"
         >

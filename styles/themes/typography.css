@@ -7,6 +7,10 @@
   --font-content: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+[data-font='liberation'] {
+  --font-content: 'Liberation Serif', 'Times New Roman', serif;
+}
+
 /* Font size */
 [data-font-size='16'] {
   --font-size-content: 16px;

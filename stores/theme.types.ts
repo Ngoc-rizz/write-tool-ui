@@ -1,7 +1,7 @@
 // Theme & Typography settings types
 
 export type ThemeMode = 'giay-nga' | 'giay-moc' | 'dem-than';
-export type FontFamily = 'serif' | 'sans';
+export type FontFamily = 'serif' | 'sans' | 'liberation';
 export type FontSize = '16' | '18' | '20';
 export type ContentWidth = '680' | '740' | '800';
 
@@ -48,6 +48,11 @@ export const FONT_OPTIONS = [
     value: 'serif' as FontFamily,
     label: 'Source Serif 4',
     description: 'Cổ điển, ấm cúng như trang sách in',
+  },
+  {
+    value: 'liberation' as FontFamily,
+    label: 'Liberation Serif',
+    description: 'Phông chữ cổ điển, dễ đọc',
   },
   {
     value: 'sans' as FontFamily,
