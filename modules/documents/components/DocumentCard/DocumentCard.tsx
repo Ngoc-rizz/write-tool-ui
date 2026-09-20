@@ -54,7 +54,7 @@ export default function DocumentCard({ document, layout = 'grid', onEditClick, o
             <path d="M12 20h9"></path>
             <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
           </svg>
-          Chỉnh sửa thông tin
+          Edit details
         </button>
         <button className={`${styles.dropdownItem} ${styles.danger}`} onClick={handleDelete}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -63,7 +63,7 @@ export default function DocumentCard({ document, layout = 'grid', onEditClick, o
             <line x1="10" y1="11" x2="10" y2="17"></line>
             <line x1="14" y1="11" x2="14" y2="17"></line>
           </svg>
-          Xóa tài liệu
+          Delete document
         </button>
       </div>
     )
@@ -98,7 +98,7 @@ export default function DocumentCard({ document, layout = 'grid', onEditClick, o
       >
         <div className={styles.listMain}>
           <h3 className={styles.title}>{document.title}</h3>
-          <p className={styles.description}>{document.summary || 'Chưa có tóm tắt'}</p>
+          <p className={styles.description}>{document.summary || 'No summary'}</p>
         </div>
 
         <div className={styles.listRight}>
@@ -107,8 +107,8 @@ export default function DocumentCard({ document, layout = 'grid', onEditClick, o
               {new Date(document.updatedAt).toLocaleDateString('vi-VN', { day: 'numeric', month: 'short' })}
             </div>
             <div className={styles.listStats}>
-              <span className={styles.statBadge}>{document.chapterCount} chương</span>
-              <span className={styles.statBadge}>{document.wordCount} từ</span>
+              <span className={styles.statBadge}>{document.chapterCount} chapters</span>
+              <span className={styles.statBadge}>{document.wordCount} words</span>
             </div>
           </div>
           {renderMenuBtn()}
@@ -128,7 +128,7 @@ export default function DocumentCard({ document, layout = 'grid', onEditClick, o
         {renderMenuBtn()}
       </div>
 
-      <p className={styles.description}>{document.summary || 'Chưa có tóm tắt'}</p>
+      <p className={styles.description}>{document.summary || 'No summary'}</p>
 
       <div className={styles.footer}>
         <div className={styles.date}>
@@ -139,8 +139,8 @@ export default function DocumentCard({ document, layout = 'grid', onEditClick, o
           {new Date(document.updatedAt).toLocaleDateString('vi-VN', { day: 'numeric', month: 'short' })}
         </div>
         <div className={styles.stats}>
-          <span className={styles.statBadge}>{document.chapterCount} chương</span>
-          <span className={styles.statBadge}>{document.wordCount} từ</span>
+          <span className={styles.statBadge}>{document.chapterCount} chapters</span>
+          <span className={styles.statBadge}>{document.wordCount} words</span>
         </div>
       </div>
     </div>

@@ -17,8 +17,8 @@ const sourceSerif4 = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
-  title: "Write Tool — Công cụ viết sáng tạo",
-  description: "Ứng dụng hỗ trợ viết với giao diện dịu mắt, tối giản kiểu Neumorphism",
+  title: "Write Tool — Creative Writing Tool",
+  description: "A writing app with a gentle, minimalist Neumorphic interface",
 };
 
 const themeInitScript = `

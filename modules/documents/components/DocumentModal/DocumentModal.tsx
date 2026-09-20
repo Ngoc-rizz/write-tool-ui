@@ -50,8 +50,8 @@ export default function DocumentModal({ isOpen, onClose, onSave, initialData, is
     <div className={styles.overlay}>
       <div className={styles.modal}>
         <div className={styles.header}>
-          <h2>{initialData ? 'Chỉnh sửa tài liệu' : 'Tạo tài liệu mới'}</h2>
-          <button className={styles.closeBtn} onClick={onClose} disabled={isSaving} aria-label="Đóng">
+          <h2>{initialData ? 'Edit document' : 'Create new document'}</h2>
+          <button className={styles.closeBtn} onClick={onClose} disabled={isSaving} aria-label="Close">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -61,12 +61,12 @@ export default function DocumentModal({ isOpen, onClose, onSave, initialData, is
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
-            <label>Tên tài liệu <span style={{ color: 'var(--danger)' }}>*</span></label>
+            <label>Document name <span style={{ color: 'var(--danger)' }}>*</span></label>
             <input
               type="text"
               value={title}
               onChange={e => setTitle(e.target.value)}
-              placeholder="VD: Cuốn sách đầu tay"
+              placeholder="VD: My first book"
               className={styles.input}
               required
               disabled={isSaving}
@@ -74,11 +74,11 @@ export default function DocumentModal({ isOpen, onClose, onSave, initialData, is
           </div>
 
           <div className={styles.formGroup}>
-            <label>Tóm tắt</label>
+            <label>Summary</label>
             <textarea
               value={summary}
               onChange={e => setSummary(e.target.value)}
-              placeholder="Tóm tắt nội dung tài liệu..."
+              placeholder="Summarize the document..."
               className={styles.input}
               rows={3}
               disabled={isSaving}
@@ -86,11 +86,11 @@ export default function DocumentModal({ isOpen, onClose, onSave, initialData, is
           </div>
 
           <div className={styles.formGroup}>
-            <label>Ghi chú</label>
+            <label>Notes</label>
             <textarea
               value={note}
               onChange={e => setNote(e.target.value)}
-              placeholder="Ghi chú thêm về thiết lập thế giới, nhân vật..."
+              placeholder="Additional notes about world-building and characters..."
               className={styles.input}
               rows={3}
               disabled={isSaving}
@@ -98,21 +98,21 @@ export default function DocumentModal({ isOpen, onClose, onSave, initialData, is
           </div>
 
           <div className={styles.formGroup}>
-            <label>Ngôn ngữ</label>
+            <label>Language</label>
             <input
               type="text"
               value={language}
               onChange={e => setLanguage(e.target.value)}
-              placeholder="VD: Tiếng Việt"
+              placeholder="E.g.: English"
               className={styles.input}
               disabled={isSaving}
             />
           </div>
 
           <div className={styles.footer}>
-            <button type="button" className={styles.cancelBtn} onClick={onClose} disabled={isSaving}>Hủy</button>
+            <button type="button" className={styles.cancelBtn} onClick={onClose} disabled={isSaving}>Cancel</button>
             <button type="submit" className={styles.submitBtn} disabled={!title.trim() || isSaving}>
-              {isSaving ? 'Đang lưu...' : 'Lưu lại'}
+              {isSaving ? 'Saving...' : 'Save'}
             </button>
           </div>
         </form>

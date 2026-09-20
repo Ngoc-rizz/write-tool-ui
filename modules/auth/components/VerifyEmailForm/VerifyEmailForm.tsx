@@ -99,7 +99,7 @@ export default function VerifyEmailForm({ initialEmail, onBackToRegister }: Veri
     if (e) e.preventDefault();
     const token = otp.join('');
     if (token.length !== 6) {
-      setError('Vui lòng nhập đủ 6 chữ số mã xác nhận');
+      setError('Please enter all six digits of the verification code');
       return;
     }
 
@@ -109,29 +109,29 @@ export default function VerifyEmailForm({ initialEmail, onBackToRegister }: Veri
 
     try {
       await api.auth.verifyEmail({ email, token });
-      setSuccess('Xác thực email thành công! Đang chuyển hướng sang trang đăng nhập...');
+      setSuccess('Email verified successfully! Redirecting to the login page...');
       setTimeout(() => {
         router.push('/login');
       }, 1000);
     } catch (err: any) {
-      setError(err?.message || 'Mã xác nhận không hợp lệ hoặc đã hết hạn.');
+      setError(err?.message || 'The verification code is invalid or has expired.');
       setLoading(false);
     }
   };
 
   const handleResendToken = async () => {
     if (!email) {
-      setError('Vui lòng nhập lại email cần gửi lại mã xác nhận.');
+      setError('Please enter the email address to resend the verification code.');
       return;
     }
     setResendLoading(true);
     setError(null);
     try {
       const res = await api.auth.resendVerification({ email });
-      setSuccess(res?.message || 'Mã xác nhận mới đã được gửi tới email của bạn!');
+      setSuccess(res?.message || 'A new verification code has been sent to your email!');
       setResendCooldown(60);
     } catch (err: any) {
-      setError(err?.message || 'Không thể gửi lại mã xác nhận. Vui lòng thử lại sau.');
+      setError(err?.message || 'Unable to resend the verification code. Please try again later.');
     } finally {
       setResendLoading(false);
     }
@@ -141,9 +141,9 @@ export default function VerifyEmailForm({ initialEmail, onBackToRegister }: Veri
 
   return (
     <AuthCard activeTab={null}>
-      <h1 className={styles.heading}>Xác nhận mã Token</h1>
+      <h1 className={styles.heading}>Confirm token</h1>
       <p className={styles.subtitle}>
-        Vui lòng nhập mã xác nhận 6 chữ số vừa được gửi tới email của bạn
+        Enter the six-digit verification code sent to your email
       </p>
 
       {email && (
@@ -193,7 +193,7 @@ export default function VerifyEmailForm({ initialEmail, onBackToRegister }: Veri
               onKeyDown={(e) => handleKeyDown(idx, e)}
               onPaste={idx === 0 ? handlePaste : undefined}
               className={`${styles.otpInput} ${digit ? styles.otpInputFilled : ''}`}
-              aria-label={`Mã số ${idx + 1}`}
+              aria-label={`Code digit ${idx + 1}`}
               id={`otp-input-${idx}`}
               autoComplete="off"
             />
@@ -207,12 +207,12 @@ export default function VerifyEmailForm({ initialEmail, onBackToRegister }: Veri
           id="verify-token-submit"
           style={{ opacity: (!isOtpComplete || loading) ? 0.7 : 1 }}
         >
-          {loading ? 'Đang xác thực...' : 'Xác nhận mã Token'}
+          {loading ? 'Verifying...' : 'Confirm token'}
         </button>
       </form>
 
       <div className={styles.resendSection}>
-        <div>Không nhận được mã?</div>
+        <div>Didn’t receive the code?</div>
         <button
           type="button"
           onClick={handleResendToken}
@@ -221,10 +221,10 @@ export default function VerifyEmailForm({ initialEmail, onBackToRegister }: Veri
           id="resend-token-btn"
         >
           {resendLoading
-            ? 'Đang gửi lại...'
+            ? 'Resending...'
             : resendCooldown > 0
-            ? `Gửi lại mã xác nhận (${resendCooldown}s)`
-            : 'Gửi lại mã xác nhận'}
+            ? `Resend verification code (${resendCooldown}s)`
+            : 'Resend verification code'}
         </button>
       </div>
 
@@ -236,11 +236,11 @@ export default function VerifyEmailForm({ initialEmail, onBackToRegister }: Veri
             className={styles.bottomLink}
             style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%' }}
           >
-            ← Quay lại bước Đăng ký
+            ← Back to sign-up
           </button>
         ) : (
           <Link href="/login" className={styles.bottomLink} id="verify-back-to-login">
-            Quay lại Đăng nhập
+            Go back Log in
           </Link>
         )}
       </div>

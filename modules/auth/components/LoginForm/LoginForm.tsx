@@ -42,10 +42,10 @@ export default function LoginForm() {
       login(result.accessToken, result.user);
       router.push('/home');
     } catch (err: any) {
-      const msg = err.message || 'Đăng nhập thất bại';
+      const msg = err.message || 'Login failed';
       if (msg.includes('EMAIL_NOT_VERIFIED') || msg.toLowerCase().includes('chưa được xác thực')) {
         setIsUnverified(true);
-        setError('Tài khoản của bạn chưa được xác thực email.');
+        setError('Your account email has not been verified.');
       } else {
         setError(msg);
       }
@@ -55,7 +55,7 @@ export default function LoginForm() {
 
   return (
     <AuthCard activeTab="login">
-      <h1 className={styles.heading}>Đăng nhập tài khoản</h1>
+      <h1 className={styles.heading}>Log in to your account</h1>
 
       {error && (
         <div className={styles.alertBoxError} role="alert" style={{ marginBottom: '16px' }}>
@@ -73,7 +73,7 @@ export default function LoginForm() {
                   className={styles.resendBtn}
                   style={{ fontSize: '13px', textDecoration: 'underline' }}
                 >
-                  Nhập mã xác nhận / Gửi lại mã →
+                  Enter verification code / Resend →
                 </Link>
               </div>
             )}
@@ -84,7 +84,7 @@ export default function LoginForm() {
       <div onKeyDown={(e) => e.key === 'Enter' && handleSubmit(e)}>
         <div className={styles.fieldGroup}>
           <label className={styles.fieldLabel} htmlFor="login-email">
-            Địa chỉ Email
+            Email address
           </label>
           <div className={styles.inputWrapper}>
             <span className={styles.inputIcon}>
@@ -108,9 +108,9 @@ export default function LoginForm() {
 
         <div className={styles.fieldGroup}>
           <label className={styles.fieldLabel} htmlFor="login-password">
-            <span>Mật khẩu</span>
+            <span>Password</span>
             <Link href="/forgot-password" className={styles.fieldLabelLink}>
-              Quên mật khẩu?
+              Forgot password?
             </Link>
           </label>
           <div className={styles.inputWrapper}>
@@ -135,7 +135,7 @@ export default function LoginForm() {
               type="button"
               className={styles.togglePasswordBtn}
               onClick={() => setShowPassword(!showPassword)}
-              aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
               id="login-toggle-password"
             >
               {showPassword ? (
@@ -161,7 +161,7 @@ export default function LoginForm() {
           id="login-submit"
           disabled={loading}
         >
-          {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+          {loading ? 'Logging in...' : 'Log in'}
         </button>
       </div>
     </AuthCard>

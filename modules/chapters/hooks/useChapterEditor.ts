@@ -30,6 +30,7 @@ export function useChapterEditor() {
 
   const searchParams = useSearchParams();
   const docNameParam = searchParams.get('docName');
+  const chapterNameParam = searchParams.get('chapterName');
   const { isAuthenticated } = useAuth();
   const chapterService = useChapterService();
 
@@ -67,7 +68,7 @@ export function useChapterEditor() {
                 setDocumentName(matched.title);
               }
             } catch (e) {
-              console.error('Lỗi khi tải thông tin tài liệu:', e);
+              console.error('Error loading document details:', e);
             }
           }
         } else {
@@ -77,12 +78,34 @@ export function useChapterEditor() {
 
         const data = await chapterService.findAll(resolvedDocId);
         setChapters(data);
+        if (chapterNameParam) {
+          const duplicateMatch = chapterNameParam.match(/^(.*)--(\d+)$/);
+          const chapterSlug = duplicateMatch?.[1] || chapterNameParam;
+          const requestedIndex = duplicateMatch ? Number(duplicateMatch[2]) - 1 : 0;
+          const matchingChapters = data.filter(
+            chapter => slugify(chapter.title) === chapterSlug
+          );
+          const selectedChapter = matchingChapters.length > 1
+            ? matchingChapters[requestedIndex]
+            : matchingChapters[0];
+
+          if (selectedChapter && !selectedChapter.documentId) {
+            const fullChapter = selectedChapter.content === undefined
+              ? await chapterService.findOne(selectedChapter.id)
+              : selectedChapter;
+
+            setChapters(currentChapters => currentChapters.map(chapter => (
+              chapter.id === fullChapter.id ? fullChapter : chapter
+            )));
+            setActiveChapterId(fullChapter.id);
+          }
+        }
       } catch (err) {
-        console.error('Lỗi khi tải danh sách:', err);
+        console.error('Error loading list:', err);
       }
     };
     load();
-  }, [chapterService, docNameParam, isAuthenticated]);
+  }, [chapterNameParam, chapterService, docNameParam, isAuthenticated]);
 
   const handleEditDocumentClick = useCallback(async () => {
     if (!docId) return;
@@ -91,7 +114,7 @@ export function useChapterEditor() {
       setEditingDoc(fullDoc);
       setIsDocModalOpen(true);
     } catch (e) {
-      console.error('Lỗi khi tải chi tiết tài liệu', e);
+      console.error('Error loading document details', e);
     }
   }, [docId]);
 
@@ -112,8 +135,8 @@ export function useChapterEditor() {
         } catch { }
       }
     } catch (err) {
-      console.error('Lỗi khi lưu tài liệu:', err);
-      alert('Không thể lưu tài liệu.');
+      console.error('Error saving document:', err);
+      alert('Unable to save document.');
     } finally {
       setIsSaving(false);
     }
@@ -128,7 +151,7 @@ export function useChapterEditor() {
       chapterService.findOne(chapterId).then(full => {
         setChapters(prev => prev.map(c => c.id === chapterId ? full : c));
       }).catch(err => {
-        console.error('Lỗi khi tải nội dung chương:', err);
+        console.error('Error loading chapter content:', err);
       });
     }
   }, [chapters, chapterService]);
@@ -188,8 +211,8 @@ export function useChapterEditor() {
       setChapters(fresh);
       setIsSaveModalOpen(false);
     } catch (err) {
-      console.error('Lỗi khi lưu bản thảo:', err);
-      alert('Đã có lỗi xảy ra khi lưu!');
+      console.error('Error saving draft:', err);
+      alert('An error occurred while saving!');
     } finally {
       setIsSaving(false);
     }
@@ -197,7 +220,7 @@ export function useChapterEditor() {
 
   // --- Delete ---
   const handleDelete = useCallback(async (id: string) => {
-    if (!confirm('Bạn có chắc chắn muốn xóa bản thảo này?')) return false;
+    if (!confirm('Are you sure you want to delete this draft?')) return false;
     try {
       await chapterService.remove(id);
       setChapters(prev => prev.filter(c => c.id !== id));
@@ -208,11 +231,28 @@ export function useChapterEditor() {
       }
       return true;
     } catch (err) {
-      console.error('Lỗi khi xóa bản thảo:', err);
-      alert('Không thể xóa bản thảo.');
+      console.error('Error deleting draft:', err);
+      alert('Unable to delete draft.');
       return false;
     }
   }, [activeChapterId, chapterService]);
+
+  const handleRename = useCallback(async (id: string, title: string) => {
+    const nextTitle = title.trim();
+    if (!nextTitle || nextTitle === chapters.find(chapter => chapter.id === id)?.title) return false;
+
+    try {
+      await chapterService.update(id, { title: nextTitle });
+      setChapters(prev => prev.map(chapter => (
+        chapter.id === id ? { ...chapter, title: nextTitle } : chapter
+      )));
+      return true;
+    } catch (err) {
+      console.error('Error renaming chapter:', err);
+      alert('Unable to rename chapter.');
+      return false;
+    }
+  }, [chapterService, chapters]);
 
   // --- New draft ---
   const handleNewDraft = useCallback(() => {
@@ -238,6 +278,7 @@ export function useChapterEditor() {
     // Actions
     handleSave,
     handleDelete,
+    handleRename,
     handleNewDraft,
     loadChapterContent,
     handleEditDocumentClick,

@@ -22,23 +22,23 @@ export const DEFAULT_SETTINGS: ThemeSettings = {
 export const THEME_OPTIONS = [
   {
     value: 'giay-nga' as ThemeMode,
-    label: 'Giấy Ngà',
+    label: 'Ivory Paper',
     hex: '#F7F4EE',
-    description: 'Dịu mắt ban ngày',
+    description: 'Easy on the eyes during the day',
     icon: '☀',
   },
   {
     value: 'giay-moc' as ThemeMode,
-    label: 'Giấy Mộc',
+    label: 'Natural Paper',
     hex: '#F1EAD9',
-    description: 'Màu trang sách in',
+    description: 'The color of a printed page',
     icon: '📖',
   },
   {
     value: 'dem-than' as ThemeMode,
-    label: 'Đêm Than',
+    label: 'Charcoal Night',
     hex: '#161716',
-    description: 'Tránh bóng ma OLED',
+    description: 'Avoid OLED ghosting',
     icon: '🌙',
   },
 ] as const;
@@ -47,28 +47,28 @@ export const FONT_OPTIONS = [
   {
     value: 'serif' as FontFamily,
     label: 'Source Serif 4',
-    description: 'Cổ điển, ấm cúng như trang sách in',
+    description: 'Classic and cozy like a printed page',
   },
   {
     value: 'liberation' as FontFamily,
     label: 'Liberation Serif',
-    description: 'Phông chữ cổ điển, dễ đọc',
+    description: 'Classic, easy-to-read typeface',
   },
   {
     value: 'sans' as FontFamily,
     label: 'Inter (Sans-serif)',
-    description: 'Phẳng phiu, hiện đại, rõ nét',
+    description: 'Clean, modern, and crisp',
   },
 ] as const;
 
 export const FONT_SIZE_OPTIONS = [
   { value: '16' as FontSize, label: '16px' },
-  { value: '18' as FontSize, label: '18px (Chuẩn)' },
+  { value: '18' as FontSize, label: '18px (Standard)' },
   { value: '20' as FontSize, label: '20px' },
 ] as const;
 
 export const CONTENT_WIDTH_OPTIONS = [
-  { value: '680' as ContentWidth, label: '680px (Gọn)' },
-  { value: '740' as ContentWidth, label: '740px (Chuẩn)' },
-  { value: '800' as ContentWidth, label: '800px (Rộng)' },
+  { value: '680' as ContentWidth, label: '680px (Compact)' },
+  { value: '740' as ContentWidth, label: '740px (Standard)' },
+  { value: '800' as ContentWidth, label: '800px (Wide)' },
 ] as const;

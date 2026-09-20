@@ -80,7 +80,7 @@ export default function SaveChapterModal({ isOpen, onClose, onSave, initialTitle
     <div className={styles.overlay}>
       <div className={styles.modal}>
         <div className={styles.header}>
-          <h2>Lưu Bản Thảo</h2>
+          <h2>Save Draft</h2>
           <button className={styles.closeBtn} onClick={onClose} disabled={isSaving}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -91,12 +91,12 @@ export default function SaveChapterModal({ isOpen, onClose, onSave, initialTitle
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
-            <label>Tên chương</label>
+            <label>Chapter title</label>
             <input
               type="text"
               value={title}
               onChange={e => setTitle(e.target.value)}
-              placeholder="VD: Chương 1: Khởi đầu"
+              placeholder="E.g.: Chapter 1: The Beginning"
               className={styles.input}
               required
               disabled={isSaving}
@@ -105,7 +105,7 @@ export default function SaveChapterModal({ isOpen, onClose, onSave, initialTitle
 
           {isAuthenticated && (
             <div className={styles.formGroup}>
-              <label>Gắn vào tài liệu (sách)</label>
+              <label>Attach to document (book)</label>
               <div className={styles.radioGroup}>
                 <label className={styles.radioLabel}>
                   <input
@@ -115,7 +115,7 @@ export default function SaveChapterModal({ isOpen, onClose, onSave, initialTitle
                     onChange={() => setDocMode('none')}
                     disabled={isSaving}
                   />
-                  Không gắn (Chương tự do)
+                  Do not attach (Standalone chapter)
                 </label>
                 <label className={styles.radioLabel}>
                   <input
@@ -125,7 +125,7 @@ export default function SaveChapterModal({ isOpen, onClose, onSave, initialTitle
                     onChange={() => setDocMode('existing')}
                     disabled={isSaving}
                   />
-                  Tài liệu có sẵn
+                  Existing document
                 </label>
                 <label className={styles.radioLabel}>
                   <input
@@ -135,7 +135,7 @@ export default function SaveChapterModal({ isOpen, onClose, onSave, initialTitle
                     onChange={() => setDocMode('new')}
                     disabled={isSaving}
                   />
-                  Tạo tài liệu mới
+                  Create new document
                 </label>
               </div>
             </div>
@@ -150,12 +150,12 @@ export default function SaveChapterModal({ isOpen, onClose, onSave, initialTitle
                 disabled={isSaving || isLoadingDocs}
                 required={docMode === 'existing'}
               >
-                <option value="" disabled>-- Chọn tài liệu --</option>
+                <option value="" disabled>-- Select a document --</option>
                 {documents.map(doc => (
                   <option key={doc.id} value={doc.id}>{doc.title}</option>
                 ))}
               </select>
-              {isLoadingDocs && <span className={styles.loadingText}>Đang tải...</span>}
+              {isLoadingDocs && <span className={styles.loadingText}>Loading...</span>}
             </div>
           )}
 
@@ -165,7 +165,7 @@ export default function SaveChapterModal({ isOpen, onClose, onSave, initialTitle
                 type="text"
                 value={newDocName}
                 onChange={e => setNewDocName(e.target.value)}
-                placeholder="Nhập tên tài liệu mới"
+                placeholder="Enter a new document name"
                 className={styles.input}
                 required={docMode === 'new'}
                 disabled={isSaving}
@@ -178,7 +178,7 @@ export default function SaveChapterModal({ isOpen, onClose, onSave, initialTitle
               <textarea
                 value={newDocSummary}
                 onChange={e => setNewDocSummary(e.target.value)}
-                placeholder="Tóm tắt tài liệu (không bắt buộc)"
+                placeholder="Document summary (optional)"
                 className={styles.input}
                 rows={3}
                 disabled={isSaving}
@@ -191,7 +191,7 @@ export default function SaveChapterModal({ isOpen, onClose, onSave, initialTitle
               <textarea
                 value={newDocNote}
                 onChange={e => setNewDocNote(e.target.value)}
-                placeholder="Ghi chú thêm (không bắt buộc)"
+                placeholder="Additional notes (optional)"
                 className={styles.input}
                 rows={2}
                 disabled={isSaving}
@@ -205,7 +205,7 @@ export default function SaveChapterModal({ isOpen, onClose, onSave, initialTitle
                 type="text"
                 value={newDocLanguage}
                 onChange={e => setNewDocLanguage(e.target.value)}
-                placeholder="Ngôn ngữ (VD: Tiếng Việt)"
+                placeholder="Language (E.g.: English)"
                 className={styles.input}
                 disabled={isSaving}
               />
@@ -213,9 +213,9 @@ export default function SaveChapterModal({ isOpen, onClose, onSave, initialTitle
           )}
 
           <div className={styles.footer}>
-            <button type="button" className={styles.cancelBtn} onClick={onClose} disabled={isSaving}>Hủy</button>
+            <button type="button" className={styles.cancelBtn} onClick={onClose} disabled={isSaving}>Cancel</button>
             <button type="submit" className={styles.submitBtn} disabled={!title.trim() || (docMode === 'new' && !newDocName.trim()) || (docMode === 'existing' && !selectedDocId) || isSaving}>
-              {isSaving ? 'Đang lưu...' : 'Lưu lại'}
+              {isSaving ? 'Saving...' : 'Save'}
             </button>
           </div>
         </form>

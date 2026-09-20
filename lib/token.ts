@@ -36,7 +36,7 @@ export async function refreshAccessToken(): Promise<string> {
 
     if (!res.ok) {
         clearAccessToken();
-        throw new Error('Refresh token hết hạn');
+        throw new Error('Refresh token expired');
     }
 
     const result = await res.json();

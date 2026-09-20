@@ -43,29 +43,28 @@ export default function ThemeSettings() {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.titleWrapper}>
-          <h2 className={styles.title}>Giao diện</h2>
+          <h2 className={styles.title}>Appearance</h2>
         </div>
       </div>
-      <div className={styles.themeGrid}>
+      <div className={styles.themeGrid} role="radiogroup" aria-label="Appearance themes">
         {THEME_OPTIONS.map((theme) => (
-          <div
+          <button
             key={theme.value}
+            type="button"
             className={`${styles.themeCard} ${settings.theme === theme.value ? styles.active : ''}`}
             onClick={() => setTheme(theme.value)}
-            style={{
-              backgroundColor: theme.value === 'dem-than' ? '#161716' : undefined,
-              color: theme.value === 'dem-than' ? '#E3E0D8' : undefined,
-              borderColor: theme.value === 'dem-than' && settings.theme !== 'dem-than' ? '#2A2C2A' : undefined
-            }}
+            aria-pressed={settings.theme === theme.value}
+            data-theme={theme.value}
           >
             <div className={styles.themeCardHeader}>
-              <span className={styles.themeName} style={{ color: theme.value === 'dem-than' ? '#E3E0D8' : undefined }}>{theme.label}</span>
+              <span className={styles.themeName}>{theme.label}</span>
               <span className={styles.themeIcon}>{getIconForTheme(theme.value)}</span>
             </div>
-            <div className={styles.themeInfo}>
-              <span className={styles.themeDesc} style={{ color: theme.value === 'dem-than' ? '#A0A09B' : undefined }}>{theme.description}</span>
-            </div>
-          </div>
+            <span className={styles.themeDesc}>{theme.description}</span>
+            <span className={styles.selectionMark} aria-hidden="true">
+              {settings.theme === theme.value ? '✓' : ''}
+            </span>
+          </button>
         ))}
       </div>
     </div>

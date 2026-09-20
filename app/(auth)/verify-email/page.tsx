@@ -3,7 +3,7 @@ import { VerifyEmailForm } from '@/modules/auth';
 
 export default function VerifyEmailPage() {
   return (
-    <Suspense fallback={<div>Đang tải...</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
       <VerifyEmailForm />
     </Suspense>
   );

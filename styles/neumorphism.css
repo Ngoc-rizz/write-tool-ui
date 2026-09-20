@@ -7,24 +7,17 @@
 
 .neu-raised {
   background: var(--color-bg-card);
-  box-shadow: var(--shadow-outer);
   border: var(--border-subtle);
   border-radius: var(--border-radius-md);
-  transition: box-shadow var(--transition-normal),
-              background var(--transition-normal);
 }
 
 .neu-raised:hover {
-  box-shadow: var(--shadow-outer-sm);
 }
 
 .neu-pressed {
   background: var(--color-bg-card);
-  box-shadow: none;
   border: var(--border-subtle);
   border-radius: var(--border-radius-md);
-  transition: box-shadow var(--transition-normal),
-              background var(--transition-normal);
 }
 
 .neu-flat {

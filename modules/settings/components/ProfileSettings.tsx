@@ -23,7 +23,7 @@ export default function ProfileSettings() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Connect to update profile API
-    alert('Đã lưu thay đổi hồ sơ!');
+    alert('Profile changes saved!');
   };
 
   return (
@@ -36,25 +36,25 @@ export default function ProfileSettings() {
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </div>
-          <h2 className={styles.title}>Hồ sơ tác giả</h2>
+          <h2 className={styles.title}>Author profile</h2>
         </div>
       </div>
 
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
-          <label className={styles.label}>Tên hiển thị</label>
+          <label className={styles.label}>Display name</label>
           <input
             type="text"
             className={styles.input}
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Tên hiển thị"
+            placeholder="Display name"
             required
           />
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label}>Địa chỉ Email</label>
+          <label className={styles.label}>Email address</label>
           <input
             type="email"
             className={styles.input}
@@ -68,7 +68,7 @@ export default function ProfileSettings() {
 
         <div className={styles.actions}>
           <button type="submit" className={styles.submitBtn}>
-            Lưu thay đổi
+            Save changes
           </button>
         </div>
       </form>

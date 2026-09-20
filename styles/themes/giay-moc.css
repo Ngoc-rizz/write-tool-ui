@@ -10,11 +10,11 @@
   --color-text-muted: #9C8B72;
   --color-accent: #7A542E;
   --color-accent-hover: #614324;
-  --color-border: rgba(122, 84, 46, 0.1);
+  --color-border: rgba(122, 84, 46, 0.28);
 
   /* Neumorphism shadow colors */
-  --shadow-dark: #D4CDBF;
-  --shadow-light: #FFF8EB;
+  --shadow-dark: none;
+  --shadow-light: none;
 
   /* Primary Button */
   --color-primary: #383021;

@@ -16,9 +16,9 @@ export default function ForgotPasswordForm() {
 
   return (
     <AuthCard activeTab={null} >
-      <h1 className={styles.heading}>Quên mật khẩu</h1>
+      <h1 className={styles.heading}>Forgot password</h1>
       <p className={styles.subtitle}>
-        Nhận mã xác thực OTP qua email để khôi phục quyền truy cập
+        Receive an OTP by email to restore access
       </p>
 
       {/* Info Box */}
@@ -27,11 +27,11 @@ export default function ForgotPasswordForm() {
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
           </svg>
-          Khôi phục quyền truy cập
+          Restore access
         </div>
         <p className={styles.infoBoxDescription}>
-          Hệ thống sẽ tạo mã xác thực 6 chữ số gửi đến email của bạn
-          để tiến hành thiết lập mật khẩu mới.
+          The system will send a six-digit verification code to your email
+          to set a new password.
         </p>
       </div>
 
@@ -39,7 +39,7 @@ export default function ForgotPasswordForm() {
         {/* Email */}
         <div className={styles.fieldGroup}>
           <label className={styles.fieldLabel} htmlFor="forgot-email">
-            Nhập Email đăng ký của bạn
+            Enter your registered email
           </label>
           <div className={styles.inputWrapper}>
             <span className={styles.inputIcon}>
@@ -67,13 +67,13 @@ export default function ForgotPasswordForm() {
               <line x1="22" y1="2" x2="11" y2="13" />
               <polygon points="22 2 15 22 11 13 2 9 22 2" />
             </svg>
-            Gửi mã xác thực OTP
+            Send OTP
           </span>
         </button>
       </form>
 
       <Link href="/login" className={styles.bottomLink} id="forgot-back-to-login">
-        Quay lại màn hình Đăng nhập
+        Go back to the login screen
       </Link>
     </AuthCard>
   );

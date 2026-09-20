@@ -13,6 +13,7 @@ interface EditorSidebarProps {
   activeChapterId?: string;
   onChapterClick?: (id: string) => void;
   onDeleteChapterClick?: (id: string) => void;
+  onRenameChapterClick?: (id: string) => void;
   onSaveClick?: () => void;
   onDownloadTxtClick?: () => void;
   onImportFileClick?: () => void;
@@ -21,17 +22,29 @@ interface EditorSidebarProps {
   isSaving?: boolean;
 }
 
-export default function EditorSidebar({ isOpen, onToggle, onMobileClose, isMobile, documentName, chapters, activeChapterId, onChapterClick, onDeleteChapterClick, onSaveClick, onDownloadTxtClick, onImportFileClick, onNewDraftClick, onEditDocumentClick, isSaving }: EditorSidebarProps) {
+export default function EditorSidebar({ isOpen, onToggle, onMobileClose, isMobile, documentName, chapters, activeChapterId, onChapterClick, onDeleteChapterClick, onRenameChapterClick, onSaveClick, onDownloadTxtClick, onImportFileClick, onNewDraftClick, onEditDocumentClick, isSaving }: EditorSidebarProps) {
+  const [contextMenu, setContextMenu] = React.useState<{ chapterId: string; x: number; y: number } | null>(null);
+
+  React.useEffect(() => {
+    const closeMenu = () => setContextMenu(null);
+    window.addEventListener('click', closeMenu);
+    window.addEventListener('resize', closeMenu);
+    return () => {
+      window.removeEventListener('click', closeMenu);
+      window.removeEventListener('resize', closeMenu);
+    };
+  }, []);
+
   return (
     <div className={styles.sidebar}>
       {documentName && (
         <div className={styles.docInfoSection}>
-          <Link href="/" className={styles.backBtn} aria-label="Quay lại Tài liệu">
+          <Link href="/" className={styles.backBtn} aria-label="Go back Documents">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            <span className={styles.backText}>Tài liệu</span>
+            <span className={styles.backText}>Documents</span>
           </Link>
         </div>
       )}
@@ -39,14 +52,14 @@ export default function EditorSidebar({ isOpen, onToggle, onMobileClose, isMobil
       <div className={styles.header}>
         <div className={styles.titleWrapper} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <p className={styles.docTitle}>
-            {documentName ? `Bản thảo: ${documentName}` : ''}
+            {documentName ? `Draft: ${documentName}` : ''}
           </p>
           {documentName && onEditDocumentClick && (
             <button 
               className={styles.editDocBtn} 
               onClick={onEditDocumentClick} 
-              aria-label="Chỉnh sửa thông tin tài liệu"
-              title="Chỉnh sửa thông tin tài liệu"
+              aria-label="Edit document details"
+              title="Edit document details"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 20h9"></path>
@@ -56,7 +69,7 @@ export default function EditorSidebar({ isOpen, onToggle, onMobileClose, isMobil
           )}
         </div>
         {isMobile && (
-          <button className={styles.closeBtn} onClick={onMobileClose} aria-label="Đóng">
+          <button className={styles.closeBtn} onClick={onMobileClose} aria-label="Close">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -71,7 +84,7 @@ export default function EditorSidebar({ isOpen, onToggle, onMobileClose, isMobil
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
-          Viết bản thảo mới
+          Write a new draft
         </button>
       </div>
 
@@ -80,34 +93,55 @@ export default function EditorSidebar({ isOpen, onToggle, onMobileClose, isMobil
           chapters.map((chapter) => (
             <div
               key={chapter.id}
+              data-chapter-item
               className={`${styles.chapterItem} ${activeChapterId === chapter.id ? styles.active : ''}`}
               onClick={() => onChapterClick && onChapterClick(chapter.id)}
+              onContextMenu={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                setContextMenu({ chapterId: chapter.id, x: event.clientX, y: event.clientY });
+              }}
               style={{ cursor: 'pointer' }}
             >
               <div className={styles.chapterContent}>
                 <div className={styles.chapterTitle}>{chapter.title}</div>
               </div>
-              <button
-                className={styles.deleteBtn}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDeleteChapterClick && onDeleteChapterClick(chapter.id);
-                }}
-                title="Xóa bản thảo"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
-              </button>
             </div>
           ))
         ) : (
           <div className={styles.emptyState}>
-            <p>Chưa có bản thảo nào.</p>
+            <p>No drafts yet.</p>
           </div>
         )}
       </div>
+
+      {contextMenu && (
+        <div
+          className={styles.contextMenu}
+          style={{ left: contextMenu.x, top: contextMenu.y }}
+          onClick={(event) => event.stopPropagation()}
+        >
+          <button
+            type="button"
+            onClick={() => {
+              onRenameChapterClick?.(contextMenu.chapterId);
+              setContextMenu(null);
+            }}
+          >
+            Rename chapter
+          </button>
+          <button
+            type="button"
+            className={styles.contextDelete}
+            onClick={() => {
+              onDeleteChapterClick?.(contextMenu.chapterId);
+              setContextMenu(null);
+            }}
+          >
+            Delete chapter
+          </button>
+        </div>
+      )}
 
       <div className={styles.footer}>
         <EditorActions

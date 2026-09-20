@@ -13,6 +13,7 @@ import SaveChapterModal from './SaveChapterModal';
 import { useChapterEditor } from '../hooks/useChapterEditor';
 import DocumentModal from '@/modules/documents/components/DocumentModal/DocumentModal';
 import { importFile } from '../utils/fileImport';
+import { useFileImport } from '../hooks/useFileImport';
 
 export default function ChapterEditor() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -34,6 +35,7 @@ export default function ChapterEditor() {
     editingDoc,
     handleSave,
     handleDelete,
+    handleRename,
     handleNewDraft,
     loadChapterContent,
     handleEditDocumentClick,
@@ -75,6 +77,19 @@ export default function ChapterEditor() {
     }
   }, [activeChapterId, editor, chapters, loadChapterContent, loadedChapterIdRef]);
 
+  useEffect(()=> {
+    const handleKeyDown = (e: KeyboardEvent)=> {
+      if((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault()
+        e.stopPropagation()
+        
+        setIsSaveModalOpen(true);
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [handleSave])
+
   // --- Handlers that need access to the editor ---
   const handleSaveSubmit = async (data: Parameters<typeof handleSave>[0]) => {
     await handleSave(data, () => ({
@@ -102,6 +117,16 @@ export default function ChapterEditor() {
     }
   };
 
+  const handleRenameChapter = async (id: string) => {
+    const chapter = chapters.find(item => item.id === id);
+    if (!chapter) return;
+
+    const title = window.prompt('Rename chapter', chapter.title);
+    if (title !== null) {
+      await handleRename(id, title);
+    }
+  };
+
   const handleDownloadTxtClick = () => {
     if (!editor) return;
     const text = editor.getText();
@@ -116,37 +141,8 @@ export default function ChapterEditor() {
   };
 
   // --- Import file ---
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { fileInputRef, handleImportFileClick, handleFileSelected } = useFileImport(editor, handleNewDraftClick);
 
-  const handleImportFileClick = useCallback(() => {
-    fileInputRef.current?.click();
-  }, []);
-
-  const handleFileSelected = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !editor) return;
-
-    // Reset input so the same file can be selected again
-    e.target.value = '';
-
-    // Confirm if editor has content
-    const currentText = editor.getText().trim();
-    if (currentText.length > 0) {
-      const confirmed = window.confirm(
-        'Trình soạn thảo đang có nội dung. Bạn có muốn thay thế bằng nội dung từ file không?'
-      );
-      if (!confirmed) return;
-    }
-
-    try {
-      const result = await importFile(file);
-      editor.commands.setContent(result.html);
-      editor.commands.focus();
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Không thể đọc file.';
-      alert(message);
-    }
-  }, [editor]);
 
   // --- Scroll ---
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -183,6 +179,7 @@ export default function ChapterEditor() {
     onImportFileClick: handleImportFileClick,
     onNewDraftClick: handleNewDraftClick,
     onDeleteChapterClick: handleDeleteChapter,
+    onRenameChapterClick: handleRenameChapter,
     onEditDocumentClick: handleEditDocumentClick,
     isSaving,
   };
@@ -195,7 +192,7 @@ export default function ChapterEditor() {
         <button
           className={`${styles.sidebarToggleBtn} ${isSidebarOpen ? styles.isOpen : styles.isClosed}`}
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          aria-label={isSidebarOpen ? "Thu gọn" : "Mở mục lục"}
+          aria-label={isSidebarOpen ? "Collapse" : "Open table of contents"}
         >
           {isSidebarOpen ? (
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -248,12 +245,12 @@ export default function ChapterEditor() {
           </div>
 
           <div className={styles.floatingActions}>
-            <button className={styles.floatingBtn} onClick={handleScrollToTop} title="Lên đầu trang">
+            <button className={styles.floatingBtn} onClick={handleScrollToTop} title="Go to top">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="18 15 12 9 6 15"></polyline>
               </svg>
             </button>
-            <button className={styles.floatingBtn} onClick={handleScrollToBottom} title="Viết tiếp (Xuống cuối trang)">
+            <button className={styles.floatingBtn} onClick={handleScrollToBottom} title="Continue writing (Go to bottom)">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="6 9 12 15 18 9"></polyline>
               </svg>
