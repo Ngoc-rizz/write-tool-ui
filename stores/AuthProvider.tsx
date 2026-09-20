@@ -13,7 +13,7 @@ import { clearAccessToken, getAccessToken, setAccessToken, getCsrfToken } from '
 
 const VISITOR_USER: CurrentUser = {
     id: 'visitor',
-    name: 'Khách',
+    name: 'Guest',
     email: '',
     role: 'visitor',
     permissions: [],

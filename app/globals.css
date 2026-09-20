@@ -9,6 +9,10 @@
   --font-serif: var(--font-content);
 }
 
+* {
+  text-shadow: none !important;
+}
+
 body {
   background: var(--color-bg-page);
   color: var(--color-text-primary);

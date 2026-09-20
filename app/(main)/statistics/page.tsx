@@ -1,3 +1,9 @@
+import BackButton from "@/components/common/BackButton/BackButton";
+
 export default function StatisticsPage() {
-  return <div>Statistics Page</div>;
+  return (
+    <main>
+      <h1>Statistics</h1>
+    </main>
+  );
 }

@@ -6,3 +6,4 @@ export { default as Modal } from './Modal/Modal';
 export { default as Avatar } from './Avatar/Avatar';
 export { default as Badge } from './Badge/Badge';
 export { default as Dropdown } from './Dropdown/Dropdown';
+export { default as BackButton } from './BackButton/BackButton';

@@ -4,7 +4,7 @@ import ChapterEditor from '@/modules/chapters/components/ChapterEditor';
 
 export default function ChapterEditorPage() {
   return (
-    <Suspense fallback={<div>Đang tải trình soạn thảo...</div>}>
+    <Suspense fallback={<div>Loading editor...</div>}>
       <ChapterEditor />
     </Suspense>
   );

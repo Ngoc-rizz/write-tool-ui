@@ -7,46 +7,46 @@ export const getErrorMessage = (status?: number, apiMessage?: string | string[])
     
     // Các lỗi liên quan đến xác thực (Auth)
     if (msgLower.includes('unauthorized') || msgLower.includes('invalid credentials') || msgLower.includes('mật khẩu không chính xác')) {
-      return 'Email hoặc mật khẩu không chính xác.';
+      return 'The email or password is incorrect.';
     }
     if (msgLower.includes('token expired') || msgLower.includes('jwt expired') || msgLower.includes('hết hạn')) {
-      return 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.';
+      return 'Your session has expired. Please log in again.';
     }
     if (msgLower.includes('user not found') || msgLower.includes('không tìm thấy người dùng')) {
-      return 'Không tìm thấy thông tin người dùng.';
+      return 'User information not found.';
     }
     if (msgLower.includes('already exists') || msgLower.includes('đã tồn tại')) {
-      return 'Dữ liệu này đã tồn tại trong hệ thống.';
+      return 'This data already exists in the system.';
     }
     if (msgLower.includes('validation')) {
-      return 'Dữ liệu đầu vào không hợp lệ. Vui lòng kiểm tra lại.';
+      return 'Invalid input. Please check and try again.';
     }
   }
 
   // Fallback map lỗi dựa trên HTTP status code
   switch (status) {
     case 400:
-      return 'Yêu cầu không hợp lệ. Vui lòng kiểm tra lại dữ liệu.';
+      return 'Invalid request. Please check the data and try again.';
     case 401:
-      return 'Bạn chưa đăng nhập hoặc phiên làm việc đã hết hạn.';
+      return 'You are not logged in or your session has expired.';
     case 403:
-      return 'Bạn không có quyền truy cập hoặc thực hiện thao tác này.';
+      return 'You do not have permission to access or perform this action.';
     case 404:
-      return 'Không tìm thấy dữ liệu hoặc trang yêu cầu.';
+      return 'The requested data or page was not found.';
     case 408:
-      return 'Yêu cầu hết thời gian chờ. Vui lòng thử lại sau.';
+      return 'The request timed out. Please try again later.';
     case 409:
-      return 'Đã xảy ra xung đột dữ liệu.';
+      return 'A data conflict occurred.';
     case 422:
-      return 'Dữ liệu đầu vào không đúng định dạng.';
+      return 'The input data is not in the correct format.';
     case 429:
-      return 'Bạn đã thực hiện quá nhiều thao tác. Vui lòng thử lại sau ít phút.';
+      return 'You have made too many requests. Please try again in a few minutes.';
     case 500:
     case 502:
     case 503:
     case 504:
-      return 'Hệ thống đang gặp sự cố. Vui lòng thử lại sau.';
+      return 'The system is experiencing issues. Please try again later.';
     default:
-      return 'Đã có lỗi xảy ra. Vui lòng thử lại.';
+      return 'An error occurred. Please try again.';
   }
 };

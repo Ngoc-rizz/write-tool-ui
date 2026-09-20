@@ -27,7 +27,7 @@ export default function AuthCard({
               onClick={() => router.push('/login')}
               id="auth-tab-login"
             >
-              Đăng nhập
+              Log in
             </button>
             <button
               type="button"
@@ -37,7 +37,7 @@ export default function AuthCard({
               onClick={() => router.push('/register')}
               id="auth-tab-register"
             >
-              Đăng ký mới
+              Sign up
             </button>
           </div>
         )}

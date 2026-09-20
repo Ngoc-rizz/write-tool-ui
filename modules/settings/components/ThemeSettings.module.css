@@ -1,12 +1,11 @@
 .container {
   background-color: var(--color-bg-page);
   border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-xl);
-  padding: 32px;
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--border-radius-lg);
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
 .header {
@@ -31,32 +30,43 @@
 .themeGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 10px;
 }
 
 .themeCard {
   background-color: var(--color-bg-card);
   border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-lg);
-  padding: 20px;
+  border-radius: var(--border-radius-md);
+  padding: 12px;
   cursor: pointer;
-  transition: all var(--transition-normal);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  box-shadow: var(--shadow-sm);
+  gap: 8px;
   position: relative;
-  overflow: hidden;
+  text-align: left;
+  font: inherit;
+  min-width: 0;
 }
 
 .themeCard:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
 }
 
 .themeCard.active {
-  box-shadow: var(--shadow-inner-md);
   border-color: var(--color-primary);
+  background-color: color-mix(in srgb, var(--color-primary) 6%, var(--color-bg-card));
+}
+
+.themeCard[data-theme='dem-than'] {
+  background-color: #161716;
+  border-color: #3c403c;
+  color: #e3e0d8;
+}
+
+.themeCard[data-theme='dem-than'].active,
+.themeCard[data-theme='dem-than']:hover {
+  border-color: #c4915a;
 }
 
 .themeCardHeader {
@@ -66,9 +76,12 @@
 }
 
 .themeName {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .themeIcon {
@@ -83,12 +96,34 @@
 }
 
 .themeDesc {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--color-text-secondary);
+  line-height: 1.35;
+}
+
+.themeCard[data-theme='dem-than'] .themeName {
+  color: #e3e0d8;
+}
+
+.themeCard[data-theme='dem-than'] .themeDesc {
+  color: #a0a09b;
+}
+
+.selectionMark {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 700;
 }
 
 @media (max-width: 768px) {
   .themeGrid {
     grid-template-columns: 1fr;
+  }
+
+  .themeCard {
+    min-height: 0;
   }
 }

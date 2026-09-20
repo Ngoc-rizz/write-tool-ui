@@ -32,12 +32,12 @@ export const api = {
         try {
             response = await fetch(`${API_BASE_URL}${endpoint}`, buildConfig(token));
         } catch (error) {
-            throw new Error('Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng và thử lại.');
+            throw new Error('Unable to connect to the server. Please check your network connection and try again.');
         }
 
         if (response.status === 401 && !skipAuth) {
             if (!token) {
-                throw new Error(getErrorMessage(401, 'Vui lòng đăng nhập để sử dụng tính năng này'));
+                throw new Error(getErrorMessage(401, 'Please log in to use this feature'));
             }
 
             if (!isRefreshing) {
@@ -63,7 +63,7 @@ export const api = {
                     window.location.href = '/login';
                     setTimeout(() => { isRedirecting = false; }, 100);
                 }
-                throw new Error(getErrorMessage(401, 'Phiên đăng nhập hết hạn, vui lòng đăng nhập lại'));
+                throw new Error(getErrorMessage(401, 'Your session has expired. Please log in again'));
             }
         }
 

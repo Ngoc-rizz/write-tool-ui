@@ -39,12 +39,10 @@
   padding: 8px 12px;
   border-radius: 10px;
   background-color: var(--color-bg-page);
-  box-shadow: var(--shadow-outer-sm), inset 0 2px 4px rgba(255, 255, 255, 0.5);
   border: 1px solid var(--color-border);
 }
 
 [data-theme='dem-than'] .logo {
-  box-shadow: var(--shadow-outer-sm);
 }
 
 .logoIcon {
@@ -73,7 +71,6 @@
   background-color: var(--color-bg-page);
   color: var(--color-text-secondary);
   cursor: pointer;
-  box-shadow: var(--shadow-outer-sm);
   transition: all var(--transition-fast);
 }
 
@@ -96,7 +93,6 @@
   font-size: 14px;
   font-weight: 500;
   font-family: var(--font-ui);
-  box-shadow: var(--shadow-outer-sm);
   transition: all var(--transition-fast);
 }
 
@@ -118,7 +114,6 @@
   border-radius: 10px;
   border: 1px solid var(--color-border);
   background-color: var(--color-bg-page);
-  box-shadow: var(--shadow-outer-sm);
   cursor: pointer;
 }
 

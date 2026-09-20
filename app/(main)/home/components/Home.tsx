@@ -8,12 +8,15 @@ import HomeNav from './HomeNav';
 import HomeContent from './HomeContent';
 import { useAuth } from '@/stores/AuthProvider';
 import DocumentModal, { DocumentModalData } from '@/modules/documents/components/DocumentModal/DocumentModal';
+import { Chapter } from '@/modules/chapters/types';
+import { useChapterService } from '@/modules/chapters/hooks/useChapterService';
 
 export default function Home() {
-  const { user } = useAuth();
+  const { user, isLoading: isAuthLoading } = useAuth();
   const [documents, setDocuments] = useState<Document[]>([]);
+  const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const chapterService = useChapterService();
   
   const [editingDoc, setEditingDoc] = useState<Document | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,17 +31,30 @@ export default function Home() {
     }
   };
 
+  const fetchChapters = async () => {
+    try {
+      const data = await chapterService.findAll();
+      setChapters(data.filter(chapter => !chapter.documentId));
+    } catch (error) {
+      console.error('Error fetching chapters:', error);
+    }
+  };
+
   useEffect(() => {
     async function loadData() {
+      if (isAuthLoading) return;
+
+      setLoading(true);
       if (user?.role === 'visitor' || !user?.permissions?.includes('all')) {
         setLoading(false);
         return;
       }
       await fetchDocuments();
+      await fetchChapters();
       setLoading(false);
     }
     loadData();
-  }, [user]);
+  }, [isAuthLoading, user, chapterService]);
 
   const handleEditDocument = (doc: Document) => {
     setEditingDoc(doc);
@@ -51,13 +67,13 @@ export default function Home() {
   };
 
   const handleDeleteDocument = async (doc: Document) => {
-    if (!confirm(`Bạn có chắc chắn muốn xóa tài liệu "${doc.title}"? Mọi bản thảo bên trong cũng sẽ bị xóa.`)) return;
+    if (!confirm(`Are you sure you want to delete the document "${doc.title}"? All drafts inside it will also be deleted.`)) return;
     try {
       await documentService.deleteDocument(doc.id);
       setDocuments(prev => prev.filter(d => d.id !== doc.id));
     } catch (error) {
-      console.error('Lỗi khi xóa tài liệu:', error);
-      alert('Không thể xóa tài liệu.');
+      console.error('Error deleting document:', error);
+      alert('Unable to delete document.');
     }
   };
 
@@ -72,8 +88,8 @@ export default function Home() {
       await fetchDocuments();
       setIsModalOpen(false);
     } catch (error) {
-      console.error('Lỗi khi lưu tài liệu:', error);
-      alert('Không thể lưu tài liệu.');
+      console.error('Error saving document:', error);
+      alert('Unable to save document.');
     } finally {
       setIsSaving(false);
     }
@@ -82,13 +98,13 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <HomeHeader user={user} onCreateDocument={handleCreateDocumentClick} />
-      <HomeNav user={user} viewMode={viewMode} onViewModeChange={setViewMode} />
+      <HomeNav user={user} />
 
       <HomeContent
         user={user}
         loading={loading}
         documents={documents}
-        viewMode={viewMode}
+        chapters={chapters}
         onEditDocument={handleEditDocument}
         onDeleteDocument={handleDeleteDocument}
       />

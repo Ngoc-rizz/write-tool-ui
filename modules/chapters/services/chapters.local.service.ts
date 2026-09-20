@@ -20,7 +20,7 @@ export class ChaptersLocalService implements IChapterService {
     if (!db) throw new Error('IndexedDB not available');
 
     const chapter = await db.get('chapters', id);
-    if (!chapter) throw new Error('Chương không tồn tại');
+    if (!chapter) throw new Error('Chapter not found');
     return chapter;
   }
 
@@ -85,7 +85,7 @@ export class ChaptersLocalService implements IChapterService {
     if (!db) throw new Error('IndexedDB not available');
 
     await db.delete('chapters', id);
-    return { message: 'Đã xoá chương' };
+    return { message: 'Chapter deleted' };
   }
 }
 

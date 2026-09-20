@@ -35,17 +35,17 @@ export default function RegisterForm() {
     setError(null);
 
     if (!name || !email || !password) {
-      setError('Vui lòng điền đầy đủ các thông tin bắt buộc');
+      setError('Please fill in all required fields');
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Mật khẩu xác nhận không khớp');
+      setError('Passwords do not match');
       return;
     }
 
     if (password.length < 6) {
-      setError('Mật khẩu phải có tối thiểu 6 ký tự');
+      setError('Password must be at least 6 characters');
       return;
     }
 
@@ -55,7 +55,7 @@ export default function RegisterForm() {
       await api.auth.register({ name, email, password });
       setStep('verify');
     } catch (err: any) {
-      setError(err?.message || 'Đăng ký thất bại. Vui lòng thử lại.');
+      setError(err?.message || 'Sign-up failed. Please try again.');
       setLoading(false);
     }
   };
@@ -71,9 +71,9 @@ export default function RegisterForm() {
 
   return (
     <AuthCard activeTab="register">
-      <h1 className={styles.heading}>Đăng ký tài khoản tác giả</h1>
+      <h1 className={styles.heading}>Create an author account</h1>
       <p className={styles.subtitle}>
-        Tạo không gian viết tinh gọn, đồng bộ và yên tĩnh
+        Create a focused, synchronized, and quiet writing space
       </p>
 
       {error && (
@@ -91,7 +91,7 @@ export default function RegisterForm() {
         {/* Name */}
         <div className={styles.fieldGroup}>
           <label className={styles.fieldLabel} htmlFor="register-name">
-            Họ và tên tác giả
+            Author name
           </label>
           <div className={styles.inputWrapper}>
             <span className={styles.inputIcon}>
@@ -104,7 +104,7 @@ export default function RegisterForm() {
               id="register-name"
               type="text"
               className={styles.inputField}
-              placeholder="Nguyễn Minh"
+              placeholder="Alex Morgan"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -117,7 +117,7 @@ export default function RegisterForm() {
         {/* Email */}
         <div className={styles.fieldGroup}>
           <label className={styles.fieldLabel} htmlFor="register-email">
-            Địa chỉ Email
+            Email address
           </label>
           <div className={styles.inputWrapper}>
             <span className={styles.inputIcon}>
@@ -142,7 +142,7 @@ export default function RegisterForm() {
         {/* Password */}
         <div className={styles.fieldGroup}>
           <label className={styles.fieldLabel} htmlFor="register-password">
-            Mật khẩu (tối thiểu 6 ký tự)
+            Password (at least 6 characters)
           </label>
           <div className={styles.inputWrapper}>
             <span className={styles.inputIcon}>
@@ -167,7 +167,7 @@ export default function RegisterForm() {
               type="button"
               className={styles.togglePasswordBtn}
               onClick={() => setShowPassword(!showPassword)}
-              aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
               id="register-toggle-password"
             >
               {showPassword ? (
@@ -189,7 +189,7 @@ export default function RegisterForm() {
         {/* Confirm Password */}
         <div className={styles.fieldGroup}>
           <label className={styles.fieldLabel} htmlFor="register-confirm-password">
-            Nhập lại mật khẩu
+            Confirm password
           </label>
           <div className={styles.inputWrapper}>
             <span className={styles.inputIcon}>
@@ -202,7 +202,7 @@ export default function RegisterForm() {
               id="register-confirm-password"
               type={showConfirm ? 'text' : 'password'}
               className={styles.inputField}
-              placeholder="Xác nhận lại mật khẩu"
+              placeholder="Re-enter your password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
@@ -214,7 +214,7 @@ export default function RegisterForm() {
               type="button"
               className={styles.togglePasswordBtn}
               onClick={() => setShowConfirm(!showConfirm)}
-              aria-label={showConfirm ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+              aria-label={showConfirm ? 'Hide password' : 'Show password'}
               id="register-toggle-confirm"
             >
               {showConfirm ? (
@@ -240,7 +240,7 @@ export default function RegisterForm() {
           className={styles.submitButton}
           id="register-submit"
         >
-          {loading ? 'Đang xử lý đăng ký...' : 'Đăng ký tài khoản'}
+          {loading ? 'Signing up...' : 'Create account'}
         </button>
       </div>
     </AuthCard>

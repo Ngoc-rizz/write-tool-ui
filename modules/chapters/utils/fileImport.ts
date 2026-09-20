@@ -1,6 +1,6 @@
 import mammoth from 'mammoth';
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 const SUPPORTED_EXTENSIONS = ['.txt', '.docx'];
 
@@ -52,13 +52,13 @@ export async function importFile(file: File): Promise<ImportResult> {
 
   if (!SUPPORTED_EXTENSIONS.includes(ext)) {
     throw new Error(
-      `Định dạng "${ext}" không được hỗ trợ. Chỉ chấp nhận: ${SUPPORTED_EXTENSIONS.join(', ')}`
+      `The "${ext}" format is not supported. Accepted formats: ${SUPPORTED_EXTENSIONS.join(', ')}`
     );
   }
 
   if (file.size > MAX_FILE_SIZE) {
     throw new Error(
-      `File quá lớn (${(file.size / 1024 / 1024).toFixed(1)}MB). Giới hạn tối đa ${MAX_FILE_SIZE / 1024 / 1024}MB.`
+      `File is too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_FILE_SIZE / 1024 / 1024}MB.`
     );
   }
 

@@ -20,7 +20,7 @@ export default function EditorActions({ onSaveClick, onDownloadTxtClick, onImpor
           <polyline points="17 21 17 13 7 13 7 21"></polyline>
           <polyline points="7 3 7 8 15 8"></polyline>
         </svg>
-        {isSaving ? 'Đang lưu...' : 'Lưu bản thảo'}
+        {isSaving ? 'Saving...' : 'Save draft'}
       </button>
 
       <button className={styles.importBtn} onClick={onImportFileClick}>
@@ -31,7 +31,7 @@ export default function EditorActions({ onSaveClick, onDownloadTxtClick, onImpor
           <line x1="9" y1="15" x2="12" y2="12"></line>
           <line x1="15" y1="15" x2="12" y2="12"></line>
         </svg>
-        Mở file (.txt, .docx)
+        Open file (.txt, .docx)
       </button>
 
       <button className={styles.downloadBtn} onClick={onDownloadTxtClick}>
@@ -40,9 +40,8 @@ export default function EditorActions({ onSaveClick, onDownloadTxtClick, onImpor
           <polyline points="7 10 12 15 17 10"></polyline>
           <line x1="12" y1="15" x2="12" y2="3"></line>
         </svg>
-        Tải xuống (.txt)
+        Download (.txt)
       </button>
     </div>
   );
 }
-

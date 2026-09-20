@@ -5,6 +5,68 @@
   gap: var(--space-xl);
 }
 
+.contentSections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.standaloneChapters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.sectionTitle {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+.chapterList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.chapterItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  background: var(--color-bg-card);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.chapterItem:hover {
+  border-color: var(--color-primary);
+  background: var(--color-bg-page);
+}
+
+.chapterTitle {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chapterMeta {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

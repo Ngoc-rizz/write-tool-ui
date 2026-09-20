@@ -23,7 +23,7 @@
   top: 0;
   left: 0;
   height: 100%;
-  width: 300px;
+  width: 250px;
   transform: translateX(-100%);
   transition: transform var(--transition-normal);
   flex-shrink: 0;
@@ -57,16 +57,14 @@
 }
 
 .sidebarToggleBtn.isOpen {
-  transform: translateX(calc(300px - 50%));
-  border-radius: 50%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transform: translateX(calc(250px - 50%));
+  border-radius: 20%;
 }
 
 .sidebarToggleBtn.isClosed {
   left: 0;
   border-left: none;
   border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
 }
 
 .sidebarToggleBtn:hover {
@@ -113,7 +111,6 @@
   max-width: 85vw;
   height: 100%;
   background-color: var(--color-bg-page);
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   transition: transform var(--transition-normal);
 }
 
@@ -180,12 +177,11 @@
 }
 
 .floatingBtn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  border-radius: 20%;
   background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -197,7 +193,6 @@
 .floatingBtn:hover {
   color: var(--color-text-primary);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 /* Responsive Rules */

@@ -10,12 +10,12 @@ export default function TypographySettings() {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.titleWrapper}>
-          <h2 className={styles.title}>Kiểu chữ</h2>
+          <h2 className={styles.title}>Typography</h2>
         </div>
       </div>
 
       <div className={styles.section}>
-        <h3 className={styles.sectionTitle}>Phông chữ nội dung</h3>
+        <h3 className={styles.sectionTitle}>Content font</h3>
         <div className={styles.fontGrid}>
           {FONT_OPTIONS.map((font) => (
             <div
@@ -31,7 +31,7 @@ export default function TypographySettings() {
       </div>
 
       <div className={styles.section}>
-        <h3 className={styles.sectionTitle}>Cỡ chữ mặc định</h3>
+        <h3 className={styles.sectionTitle}>Default font size</h3>
         <div className={styles.buttonGroup}>
           {FONT_SIZE_OPTIONS.map((size) => (
             <button

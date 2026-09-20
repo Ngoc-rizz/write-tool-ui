@@ -2,10 +2,10 @@
    BASE TOKENS (shared across all themes)
    ============================================ */
 :root {
-  /* === Lightweight Performance Shadows === */
-  --shadow-outer: 0 4px 12px rgba(0, 0, 0, 0.05);
+  /* === Shadows === */
+  --shadow-outer: none;
   --shadow-inner: none;
-  --shadow-outer-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-outer-sm: none;
 
   /* === Border === */
   --border-subtle: 1px solid var(--color-border);
@@ -54,9 +54,9 @@
   --color-text-muted: #9C8B72;
   --color-accent: #7A542E;
   --color-accent-hover: #614324;
-  --color-border: rgba(122, 84, 46, 0.1);
-  --shadow-dark: #D4CDBF;
-  --shadow-light: #FFF8EB;
+  --color-border: rgba(122, 84, 46, 0.28);
+  --shadow-dark: none;
+  --shadow-light: none;
   --color-primary: #383021;
   --color-primary-hover: #262117;
   --color-primary-text: #F1EAD9;

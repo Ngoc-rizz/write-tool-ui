@@ -24,7 +24,6 @@
   background-color: var(--color-primary);
   color: var(--color-primary-text);
   border: 1px solid transparent;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .saveBtn:hover:not(:disabled) {
