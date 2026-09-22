@@ -63,7 +63,7 @@ export default function DocumentCard({ document, layout = 'grid', onEditClick, o
             <line x1="10" y1="11" x2="10" y2="17"></line>
             <line x1="14" y1="11" x2="14" y2="17"></line>
           </svg>
-          Delete document
+          Delete
         </button>
       </div>
     )
