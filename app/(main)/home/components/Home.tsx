@@ -8,6 +8,7 @@ import HomeNav from './HomeNav';
 import HomeContent from './HomeContent';
 import { useAuth } from '@/stores/AuthProvider';
 import DocumentModal, { DocumentModalData } from '@/modules/documents/components/DocumentModal/DocumentModal';
+import ChapterModal, { ChapterModalData } from '@/modules/chapters/components/ChapterModal/ChapterModal';
 import { Chapter } from '@/modules/chapters/types';
 import { useChapterService } from '@/modules/chapters/hooks/useChapterService';
 
@@ -17,9 +18,11 @@ export default function Home() {
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
   const chapterService = useChapterService();
-  
+
   const [editingDoc, setEditingDoc] = useState<Document | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingChapter, setEditingChapter] = useState<Chapter | null>(null);
+  const [isDocModalOpen, setIsDocModalOpen] = useState(false);
+  const [isChapterModalOpen, setIsChapterModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   const fetchDocuments = async () => {
@@ -45,25 +48,46 @@ export default function Home() {
       if (isAuthLoading) return;
 
       setLoading(true);
-      if (user?.role === 'visitor' || !user?.permissions?.includes('all')) {
+      try {
+        if (user && user.role !== 'visitor' && user.permissions?.includes('all')) {
+          await fetchDocuments();
+        } else {
+          setDocuments([]);
+        }
+        await fetchChapters();
+      } finally {
         setLoading(false);
-        return;
       }
-      await fetchDocuments();
-      await fetchChapters();
-      setLoading(false);
     }
+
     loadData();
   }, [isAuthLoading, user, chapterService]);
 
+
   const handleEditDocument = (doc: Document) => {
     setEditingDoc(doc);
-    setIsModalOpen(true);
+    setIsDocModalOpen(true);
   };
 
   const handleCreateDocumentClick = () => {
     setEditingDoc(null);
-    setIsModalOpen(true);
+    setIsDocModalOpen(true);
+  };
+
+  const handleEditChapter = (chapter: Chapter) => {
+    setEditingChapter(chapter);
+    setIsChapterModalOpen(true);
+  };
+
+  const handleDeleteChapter = async (chapter: Chapter) => {
+    if (!confirm(`Are you sure you want to delete the draft "${chapter.title}"?`)) return;
+    try {
+      await chapterService.remove(chapter.id);
+      setChapters(prev => prev.filter(c => c.id !== chapter.id));
+    } catch (error) {
+      console.error('Error deleting chapter:', error);
+      alert('Unable to delete draft.');
+    }
   };
 
   const handleDeleteDocument = async (doc: Document) => {
@@ -86,10 +110,25 @@ export default function Home() {
         await documentService.createDocument(data);
       }
       await fetchDocuments();
-      setIsModalOpen(false);
+      setIsDocModalOpen(false);
     } catch (error) {
       console.error('Error saving document:', error);
       alert('Unable to save document.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleSaveChapter = async (data: ChapterModalData) => {
+    if (!editingChapter) return;
+    setIsSaving(true);
+    try {
+      await chapterService.update(editingChapter.id, { title: data.title });
+      await fetchChapters();
+      setIsChapterModalOpen(false);
+    } catch (error) {
+      console.error('Error saving chapter:', error);
+      alert('Unable to save draft.');
     } finally {
       setIsSaving(false);
     }
@@ -107,13 +146,23 @@ export default function Home() {
         chapters={chapters}
         onEditDocument={handleEditDocument}
         onDeleteDocument={handleDeleteDocument}
+        onEditChapter={handleEditChapter}
+        onDeleteChapter={handleDeleteChapter}
       />
 
       <DocumentModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isDocModalOpen}
+        onClose={() => setIsDocModalOpen(false)}
         initialData={editingDoc}
         onSave={handleSaveDocument}
+        isSaving={isSaving}
+      />
+
+      <ChapterModal
+        isOpen={isChapterModalOpen}
+        onClose={() => setIsChapterModalOpen(false)}
+        initialData={editingChapter}
+        onSave={handleSaveChapter}
         isSaving={isSaving}
       />
     </div>

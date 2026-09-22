@@ -2,6 +2,8 @@ import { getDB } from '@/lib/db';
 import { Chapter, CreateChapterDto, IChapterService, UpdateChapterDto } from '../types';
 import { countWords, countChars } from '@/utils/text.util';
 
+
+
 export class ChaptersLocalService implements IChapterService {
 
   private generateId() {
