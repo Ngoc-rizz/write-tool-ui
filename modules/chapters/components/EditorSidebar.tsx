@@ -89,6 +89,7 @@ export default function EditorSidebar({ isOpen, onToggle, onMobileClose, isMobil
       </div>
 
       <div className={styles.chapterList}>
+        {chapters && chapters?.length > 0 ? (
           chapters.map((chapter) => (
             <div
               key={chapter.id}
