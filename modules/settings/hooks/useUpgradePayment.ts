@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { api } from '@/lib/api-client';
+import { useAuth } from '@/stores/AuthProvider';
 
 export type PaymentPhase = 'idle' | 'loading' | 'qr' | 'success' | 'expired' | 'error';
 
@@ -11,26 +12,21 @@ interface PaymentData {
     transferContent: string;
     amount: number;
     expiredAt: string;
+    status: string;
 }
 
-interface UseUpgradePaymentReturn {
-    phase: PaymentPhase;
-    payment: PaymentData | null;
-    error: string | null;
-    secondsLeft: number;
-    initiateUpgrade: () => void;
-    reset: () => void;
+const PAYMENT_DURATION_SEC = 15 * 60;
+const IDEM_KEY = 'upgrade_idem';
+const DEAD = ['EXPIRED', 'CANCELLED', 'FAILED'];
+
+function getIdempotencyKey(): string {
+    const k = sessionStorage.getItem(IDEM_KEY) ?? crypto.randomUUID();
+    sessionStorage.setItem(IDEM_KEY, k);
+    return k;
 }
 
-const PAYMENT_DURATION_SEC = 15 * 60; // 15 minutes
-
-function generateIdempotencyKey(): string {
-    const ts = Date.now().toString(36);
-    const rand = Math.random().toString(36).substring(2, 10);
-    return `idem_${ts}_${rand}`;
-}
-
-export function useUpgradePayment(): UseUpgradePaymentReturn {
+export function useUpgradePayment() {
+    const { setUser } = useAuth();
     const [phase, setPhase] = useState<PaymentPhase>('idle');
     const [payment, setPayment] = useState<PaymentData | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -40,55 +36,57 @@ export function useUpgradePayment(): UseUpgradePaymentReturn {
     const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const isRequestingRef = useRef(false);
 
-    // Cleanup all intervals
     const clearTimers = useCallback(() => {
-        if (timerRef.current) {
-            clearInterval(timerRef.current);
-            timerRef.current = null;
-        }
-        if (pollRef.current) {
-            clearInterval(pollRef.current);
-            pollRef.current = null;
-        }
+        if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
+        if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
     }, []);
 
-    // Start countdown from expiredAt
     const startCountdown = useCallback((expiredAt: string) => {
         const expMs = new Date(expiredAt).getTime();
-
         const tick = () => {
-            const now = Date.now();
-            const remaining = Math.max(0, Math.floor((expMs - now) / 1000));
+            const remaining = Math.max(0, Math.floor((expMs - Date.now()) / 1000));
             setSecondsLeft(remaining);
-
             if (remaining <= 0) {
+                sessionStorage.removeItem(IDEM_KEY);
                 setPhase('expired');
                 clearTimers();
             }
         };
-
-        tick(); // immediate first tick
+        tick();
         timerRef.current = setInterval(tick, 1000);
     }, [clearTimers]);
 
-    // Poll payment status every 5s
     const startPolling = useCallback((paymentId: string) => {
+        if (pollRef.current) {
+            clearInterval(pollRef.current);
+        }
         pollRef.current = setInterval(async () => {
             try {
-                const res = await api.get<any>(`/payments/${paymentId}`);
-                if (res?.status === 'SUCCESS') {
-                    setPhase('success');
-                    clearTimers();
-                }
-            } catch {
-                // Silently ignore polling errors
-            }
-        }, 5000);
-    }, [clearTimers]);
+                const p = await api.get<PaymentData>(`/payments/${paymentId}`);
 
-    // Main action — create payment
+                if (p.status === 'SUCCESS') {
+                    clearTimers();
+                    sessionStorage.removeItem(IDEM_KEY);
+                    try {
+                        const me = await api.auth.getMe();
+                        setUser(me as any); // badge chuyển sang Pro ngay
+                    } catch { /* bỏ qua */ }
+                    setPhase('success');
+                } else if (p.status === 'EXPIRED') {
+                    clearTimers();
+                    sessionStorage.removeItem(IDEM_KEY);
+                    setPhase('expired');
+                } else if (p.status === 'FAILED' || p.status === 'CANCELLED') {
+                    clearTimers();
+                    sessionStorage.removeItem(IDEM_KEY);
+                    setError('Giao dịch không thành công.');
+                    setPhase('error');
+                }
+            } catch { /* lỗi mạng thoáng qua, thử lại lần sau */ }
+        }, 2000);
+    }, [clearTimers, setUser]);
+
     const initiateUpgrade = useCallback(async () => {
-        // Anti double-click guard
         if (isRequestingRef.current) return;
         isRequestingRef.current = true;
 
@@ -96,10 +94,19 @@ export function useUpgradePayment(): UseUpgradePaymentReturn {
         setError(null);
 
         try {
-            const result = await api.post<PaymentData>('/payments', {
+            let result = await api.post<PaymentData>('/payments', {
                 planType: 'PRO',
-                idempotencyKey: generateIdempotencyKey(),
+                idempotencyKey: getIdempotencyKey(),
             });
+
+            // Key cũ trỏ tới payment đã chết → bỏ key, tạo lại 1 lần
+            if (DEAD.includes(result.status)) {
+                sessionStorage.removeItem(IDEM_KEY);
+                result = await api.post<PaymentData>('/payments', {
+                    planType: 'PRO',
+                    idempotencyKey: getIdempotencyKey(),
+                });
+            }
 
             setPayment(result);
             setPhase('qr');
@@ -113,7 +120,6 @@ export function useUpgradePayment(): UseUpgradePaymentReturn {
         }
     }, [startCountdown, startPolling]);
 
-    // Reset to initial state
     const reset = useCallback(() => {
         clearTimers();
         setPhase('idle');
@@ -123,10 +129,7 @@ export function useUpgradePayment(): UseUpgradePaymentReturn {
         isRequestingRef.current = false;
     }, [clearTimers]);
 
-    // Cleanup on unmount
-    useEffect(() => {
-        return () => clearTimers();
-    }, [clearTimers]);
+    useEffect(() => () => clearTimers(), [clearTimers]);
 
     return { phase, payment, error, secondsLeft, initiateUpgrade, reset };
 }
