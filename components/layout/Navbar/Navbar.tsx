@@ -46,7 +46,7 @@ export default function Navbar({ onMenuClick, actions }: NavbarProps) {
 
       <div className={styles.right}>
         {actions}
-        
+
         <button className={styles.iconBtn} onClick={handleThemeToggle} title="Change theme">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="5"></circle>
@@ -76,7 +76,7 @@ export default function Navbar({ onMenuClick, actions }: NavbarProps) {
           </svg>
         </Link>
 
-        <div className={styles.userProfile}>
+        <Link href="/profile"><div className={styles.userProfile}>
           <div className={styles.avatar} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -91,6 +91,7 @@ export default function Navbar({ onMenuClick, actions }: NavbarProps) {
             )}
           </span>
         </div>
+        </Link>
 
         {isAuthenticated ? (
           <button onClick={logout} className={styles.iconBtn} title="Log out" style={{ marginLeft: '8px', border: 'none', background: 'transparent', cursor: 'pointer' }}>

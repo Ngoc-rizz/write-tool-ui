@@ -28,6 +28,7 @@ function getTimerClass(secondsLeft: number): string {
 export default function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
     const { phase, payment, error, secondsLeft, initiateUpgrade, reset } = useUpgradePayment();
 
+
     if (!isOpen) return null;
 
     const handleClose = () => {
@@ -116,7 +117,7 @@ function IdlePhase({ onUpgrade }: { onUpgrade: () => void }) {
             </div>
 
             <button className={styles.upgradeBtn} onClick={onUpgrade}>
-                Thanh toán ngay
+                Nâng cấp ngay
             </button>
         </>
     );

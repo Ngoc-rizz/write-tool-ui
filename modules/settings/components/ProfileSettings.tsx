@@ -27,7 +27,6 @@ export default function ProfileSettings() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Connect to update profile API
     alert('Profile changes saved!');
   };
 
